@@ -10,7 +10,7 @@
 
 int main(int argc, const char * argv[]) {
     // insert code here...
-    printf("only one folder \n");
+    printf("Just a test \n");
     
     std::cout << "Hello, World!\n";
     return 0;
