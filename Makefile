@@ -1,3 +1,3 @@
 all:
-	cd detector_test && docker build -t test .
-	docker run --rm test ./d_test
+	cd B1 && docker build -t b1_out .
+	# docker run --rm b1_out ./build/exampleB1
