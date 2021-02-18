@@ -13,7 +13,9 @@ jobs:
             - uses: actions/checkout@v1
 
             - name: Build docker images
-              run: docker build -t master_thesis .
+              run: |
+                cd detector_test
+                docker build -t master_thesis .
             
             - name: Run program
               run: docker run --rm -it master_thesis ./d_test
