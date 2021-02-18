@@ -3,9 +3,8 @@
 
 int main()
 {
-    printf("this is only a test file")
+    printf("this is only a test file \n");
 
-    
 
 
     return 0;
