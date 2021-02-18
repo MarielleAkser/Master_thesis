@@ -18,5 +18,5 @@ jobs:
                 docker build -t master_thesis .
             
             - name: Run program
-              run: docker run --rm -it master_thesis ./d_test
+              run: docker run --rm master_thesis ./d_test
             
