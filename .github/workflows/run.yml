@@ -1,0 +1,21 @@
+name: run
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    run:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Check out pipeline code 
+              uses: actions/checkout@v2
+
+            - name: Build docker images
+              run: docker build -t master_thesis .
+            
+            - name: Run program
+              run: docker run --rm -it master_thesis ./d_test
+            
