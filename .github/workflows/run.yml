@@ -12,11 +12,5 @@ jobs:
         steps:
             - uses: actions/checkout@v1
 
-            - name: Build docker images
-              run: |
-                cd detector_test
-                docker build -t master_thesis .
-            
-            - name: Run program
-              run: docker run --rm master_thesis ./d_test
-            
+            - name: Build and run docker images
+              run: make
