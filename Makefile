@@ -1,3 +1,7 @@
 all:
 	cd B1 && docker build -t b1_out .
-	# docker run --rm b1_out ./build/exampleB1
+	# --------------------------------------- #
+	# Open a new terminal window and open ssh #
+	# --------------------------------------- #
+	docker run --rm -i -p 55555:22 -t b1_out bash -l
+	
