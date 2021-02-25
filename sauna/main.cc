@@ -24,7 +24,7 @@
 // ********************************************************************
 //
 //
-/// \file examplesauna.cc
+/// \file main.cc
 /// \brief Main program of the sauna example
 
 #include "saunaDetectorConstruction.hh"

@@ -2,7 +2,7 @@
 # GNUmakefile for examples module.  Gabriele Cosmo, 06/04/98.
 # --------------------------------------------------------------
 
-name := examplesauna
+name := main
 G4TARGET := $(name)
 G4EXLIB := true
 
