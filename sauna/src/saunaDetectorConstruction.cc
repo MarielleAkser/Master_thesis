@@ -32,7 +32,7 @@
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
 #include "G4Box.hh"
-#include "G4Cons.hh"
+#include "G4Tubs.hh"
 #include "G4Orb.hh"
 #include "G4Sphere.hh"
 #include "G4Trd.hh"
@@ -77,7 +77,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   
   G4Box* solidWorld =    
     new G4Box("World",                       //its name
-       0.5*world_sizeXY, 0.5*world_sizeXY, 0.5*world_sizeZ);     //its size
+       1.0*world_sizeXY, 0.5*world_sizeXY, 0.5*world_sizeZ);     //its size
       
   G4LogicalVolume* logicWorld =                         
     new G4LogicalVolume(solidWorld,          //its solid
@@ -99,7 +99,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   //  
   G4Box* solidEnv =    
     new G4Box("Envelope",                    //its name
-        0.5*env_sizeXY, 0.5*env_sizeXY, 0.5*env_sizeZ); //its size
+        0.6*env_sizeXY, 0.6*env_sizeXY, 0.6*env_sizeZ); //its size
       
   G4LogicalVolume* logicEnv =                         
     new G4LogicalVolume(solidEnv,            //its solid
@@ -116,27 +116,28 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     checkOverlaps);          //overlaps checking
  
   //     
-  // Shape 1
+  // shape1 = NaI(Tl) detector
   //  
   G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
   G4ThreeVector pos1 = G4ThreeVector(0, 2*cm, -7*cm);
         
-  // Conical section shape       
-  G4double shape1_rmina =  0.*cm, shape1_rmaxa = 2.*cm;
-  G4double shape1_rminb =  0.*cm, shape1_rmaxb = 4.*cm;
-  G4double shape1_hz = 3.*cm;
+  // Cylinder section shape       
+  G4double shape1_rmin =  5.07*cm, shape1_rmax = 5.08*cm;
+  G4double shape1_hz = 6.35*cm;
   G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
-  G4Cons* solidShape1 =    
-    new G4Cons("Shape1", 
-    shape1_rmina, shape1_rmaxa, shape1_rminb, shape1_rmaxb, shape1_hz,
-    shape1_phimin, shape1_phimax);
-                      
+  G4Tubs* solidShape1 =    
+    new G4Tubs("Shape1", 
+    shape1_rmin, shape1_rmax, shape1_hz, shape1_phimin, shape1_phimax);
+
   G4LogicalVolume* logicShape1 =                         
     new G4LogicalVolume(solidShape1,         //its solid
                         shape1_mat,          //its material
                         "Shape1");           //its name
-               
-  new G4PVPlacement(0,                       //no rotation
+
+  G4RotationMatrix* rotationMatrix = new G4RotationMatrix();
+  rotationMatrix->rotateX(90.*deg);
+
+  new G4PVPlacement(rotationMatrix,          //rotation 90deg in x
                     pos1,                    //at position
                     logicShape1,             //its logical volume
                     "Shape1",                //its name
@@ -151,15 +152,13 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_BONE_COMPACT_ICRU");
   G4ThreeVector pos2 = G4ThreeVector(0, -1*cm, 7*cm);
 
-  // Trapezoid shape       
-  G4double shape2_dxa = 12*cm, shape2_dxb = 12*cm;
-  G4double shape2_dya = 10*cm, shape2_dyb = 16*cm;
-  G4double shape2_dz  = 6*cm;      
-  G4Trd* solidShape2 =    
-    new G4Trd("Shape2",                      //its name
-              0.5*shape2_dxa, 0.5*shape2_dxb, 
-              0.5*shape2_dya, 0.5*shape2_dyb, 0.5*shape2_dz); //its size
-                
+  // Cylinder shape       
+  G4double shape2_rmin = 6.35*mm, shape2_rmax = (35/2)*mm;
+  G4double shape2_hz = 50.8*mm;
+  G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
+  G4Tubs* solidShape2 =    
+    new G4Tubs("Shape2", 
+    shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
   G4LogicalVolume* logicShape2 =                         
     new G4LogicalVolume(solidShape2,         //its solid
                         shape2_mat,          //its material
