@@ -48,6 +48,9 @@ class saunaDetectorConstruction : public G4VUserDetectorConstruction
     
     G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
 
+  private:
+    void DefineMaterials();
+
   protected:
     G4LogicalVolume*  fScoringVolume;
 };

@@ -40,6 +40,17 @@
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "G4RotationMatrix.hh"
+#include "G4Transform3D.hh"
+#include "G4SDManager.hh"
+#include "G4MultiFunctionalDetector.hh"
+#include "G4VPrimitiveScorer.hh"
+#include "G4PSEnergyDeposit.hh"
+#include "G4PSDoseDeposit.hh"
+#include "G4VisAttributes.hh"
+#include "G4PhysicalConstants.hh"
+#include "G4SystemOfUnits.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaDetectorConstruction::saunaDetectorConstruction()
@@ -56,8 +67,11 @@ saunaDetectorConstruction::~saunaDetectorConstruction()
 
 G4VPhysicalVolume* saunaDetectorConstruction::Construct()
 {  
+
   // Get nist material manager
   G4NistManager* nist = G4NistManager::Instance();
+  G4Material* default_mat = nist->FindOrBuildMaterial("G4_AIR");
+  G4Material* cryst_mat   = nist->FindOrBuildMaterial("Lu2SiO5");
   
   // Envelope parameters
   //
@@ -118,7 +132,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   //     
   // shape1 = NaI(Tl) detector
   //  
-  G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_A-150_TISSUE");
+  G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_SODIUM_IODIDE");
   G4ThreeVector pos1 = G4ThreeVector(0, 2*cm, -7*cm);
         
   // Cylinder section shape       
@@ -141,7 +155,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     pos1,                    //at position
                     logicShape1,             //its logical volume
                     "Shape1",                //its name
-                    logicEnv,                //its mother  volume
+                    logicEnv,                //its mother volume
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
@@ -159,6 +173,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4Tubs* solidShape2 =    
     new G4Tubs("Shape2", 
     shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
+  
   G4LogicalVolume* logicShape2 =                         
     new G4LogicalVolume(solidShape2,         //its solid
                         shape2_mat,          //its material
