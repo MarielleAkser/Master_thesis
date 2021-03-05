@@ -33,25 +33,22 @@
 #include "G4UserEventAction.hh"
 #include "globals.hh"
 
-class saunaRunAction;
-
 /// Event action class
-///
 
 class saunaEventAction : public G4UserEventAction
 {
   public:
-    saunaEventAction(saunaRunAction* runAction);
-    virtual ~saunaEventAction();
+    saunaEventAction();
+    ~saunaEventAction();
 
-    virtual void BeginOfEventAction(const G4Event* event);
-    virtual void EndOfEventAction(const G4Event* event);
+    void BeginOfEventAction(const G4Event* anEvent) override;
+    void EndOfEventAction(const G4Event* anEvent) override;
 
-    void AddEdep(G4double edep) { fEdep += edep; }
+    // void AddEdep(G4double edep) { fEdep += edep; }
 
-  private:
-    saunaRunAction* fRunAction;
-    G4double     fEdep;
+  // private:
+  //   saunaRunAction* fRunAction;
+  //   G4double     fEdep;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -32,9 +32,10 @@
 
 #include "G4VUserPrimaryGeneratorAction.hh"
 #include "G4ParticleGun.hh"
+#include "G4GeneralParticleSource.hh"
 #include "globals.hh"
 
-class G4ParticleGun;
+class G4GeneralParticleSource;
 class G4Event;
 class G4Box;
 
@@ -47,16 +48,20 @@ class saunaPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
   public:
     saunaPrimaryGeneratorAction();    
-    virtual ~saunaPrimaryGeneratorAction();
+    ~saunaPrimaryGeneratorAction();
 
     // method from the base class
-    virtual void GeneratePrimaries(G4Event*);         
+    void GeneratePrimaries(G4Event* anEvent) override;         
   
     // method to access particle gun
-    const G4ParticleGun* GetParticleGun() const { return fParticleGun; }
-  
+    // const G4ParticleGun* GetParticleGun() const { return fParticleGun; }
+    // const G4GeneralParticleSource* const { return fGPS; }
+
+    // Set methods
+    // void SetRandomFlag(G4bool );
+
   private:
-    G4ParticleGun*  fParticleGun; // pointer a to G4 gun class
+    G4GeneralParticleSource* fGPS;
     G4Box* fEnvelopeBox;
 };
 

@@ -52,10 +52,10 @@ B3PrimaryGeneratorAction::B3PrimaryGeneratorAction()
 
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4ParticleDefinition* particle
-                    = particleTable->FindParticle("chargedgeantino");
+                    = particleTable->FindParticle("gamma");
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticlePosition(G4ThreeVector(0.,0.,0.));
-  fParticleGun->SetParticleEnergy(1*eV);    
+  fParticleGun->SetParticleEnergy(662*keV);    
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
 }
 

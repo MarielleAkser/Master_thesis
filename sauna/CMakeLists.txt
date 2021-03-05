@@ -47,6 +47,7 @@ set(sauna_SCRIPTS
   sauna.in
   sauna.out
   init_vis.mac
+  gps.mac
   run1.mac
   run2.mac
   vis.mac

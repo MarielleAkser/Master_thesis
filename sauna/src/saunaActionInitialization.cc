@@ -29,42 +29,42 @@
 
 #include "saunaActionInitialization.hh"
 #include "saunaPrimaryGeneratorAction.hh"
-#include "saunaRunAction.hh"
+
 #include "saunaEventAction.hh"
-#include "saunaSteppingAction.hh"
+#include "saunaRunAction.hh"
+#include "saunaStackingAction.hh"
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+//! Class constructor
 saunaActionInitialization::saunaActionInitialization()
  : G4VUserActionInitialization()
 {}
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+//! Class destructor
 saunaActionInitialization::~saunaActionInitialization()
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+void saunaActionInitialization::Build() const
+{
+  SetUserAction(new saunaPrimaryGeneratorAction());
+
+  saunaRunAction* theRunAction = new saunaRunAction;
+  SetUserAction(theRunAction);
+  SetUserAction(new saunaStackingAction(theRunAction));
+  
+  // saunaEventAction* eventAction = new saunaEventAction(runAction);
+  // SetUserAction(eventAction);
+  
+  // SetUserAction(new saunaSteppingAction(eventAction));
+}  
 
 void saunaActionInitialization::BuildForMaster() const
 {
-  saunaRunAction* runAction = new saunaRunAction;
-  SetUserAction(runAction);
+  // saunaRunAction* runAction = new saunaRunAction;
+  SetUserAction(new saunaRunAction());
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void saunaActionInitialization::Build() const
-{
-  SetUserAction(new saunaPrimaryGeneratorAction);
-
-  saunaRunAction* runAction = new saunaRunAction;
-  SetUserAction(runAction);
-  
-  saunaEventAction* eventAction = new saunaEventAction(runAction);
-  SetUserAction(eventAction);
-  
-  SetUserAction(new saunaSteppingAction(eventAction));
-}  
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

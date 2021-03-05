@@ -29,11 +29,12 @@
 
 #include "saunaDetectorConstruction.hh"
 #include "saunaActionInitialization.hh"
+#include "saunaPhysicsList.hh"
 
 #include "G4RunManagerFactory.hh"
 
 #include "G4UImanager.hh"
-#include "QBBC.hh"
+#include "FTFP_BERT.hh"
 
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
@@ -65,9 +66,11 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(new saunaDetectorConstruction());
 
   // Physics list
-  G4VModularPhysicsList* physicsList = new QBBC;
-  physicsList->SetVerboseLevel(1);
-  runManager->SetUserInitialization(physicsList);
+  runManager->SetUserInitialization(new saunaPhysicsList());
+
+  // G4VModularPhysicsList* physicsList = new FTFP_BERT;
+  // physicsList->SetVerboseLevel(1);
+  // runManager->SetUserInitialization(physicsList);
     
   // User action initialization
   runManager->SetUserInitialization(new saunaActionInitialization());

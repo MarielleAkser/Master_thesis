@@ -70,8 +70,8 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
 
   // Get nist material manager
   G4NistManager* nist = G4NistManager::Instance();
-  G4Material* default_mat = nist->FindOrBuildMaterial("G4_AIR");
-  G4Material* cryst_mat   = nist->FindOrBuildMaterial("Lu2SiO5");
+  // G4Material* default_mat = nist->FindOrBuildMaterial("G4_AIR");
+  // G4Material* cryst_mat   = nist->FindOrBuildMaterial("Lu2SiO5");
   
   // Envelope parameters
   //

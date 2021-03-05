@@ -1,7 +1,7 @@
-# Macro file for example sauna
+# Macro file for sauna
 # 
 # Can be run in batch, without graphic
-# or interactively: Idle> /control/execute run1.mac
+# or interactively: Idle> /control/execute gps.mac
 #
 # Change the default number of workers (in multi-threading mode) 
 #/run/numberOfThreads 4
@@ -16,15 +16,14 @@
 # 
 # gamma 6 MeV to the direction (0.,0.,1.)
 #
-/gps/particle gamma
-/gps/energy 6 MeV
-#
-/run/beamOn 5
-# 
-# proton 210 MeV to the direction (0.,0.,1.)
-#
-/gps/particle proton
-/gps/energy 210 MeV
-/tracking/verbose 2
-#
+/gps/particle e-
+/gps/ang/type iso
+/gps/direction 1 0 0
+/gps/pos/type Volume
+/gps/pos/shape Para
+/gps/pos/centre 4. 4. 4. cm
+/gps/pos/halfx 0.5 cm
+/gps/pos/halfy 0.5 cm
+/gps/pos/halfz 0.5 cm
+
 /run/beamOn 1

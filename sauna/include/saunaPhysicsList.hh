@@ -30,6 +30,7 @@
 #ifndef saunaPhysicsList_h
 #define saunaPhysicsList_h 1
 
+
 #include "G4VModularPhysicsList.hh"
 
 /// Modular physics list
@@ -43,9 +44,15 @@ class saunaPhysicsList: public G4VModularPhysicsList
 {
 public:
   saunaPhysicsList();
-  virtual ~saunaPhysicsList();
+  ~saunaPhysicsList();
+  
+  // Builds particles
+  void ConstructParticle() override;
 
-  virtual void SetCuts();
+  // Build processes
+  void ConstructProcess() override;
+
+  void SetCuts();
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

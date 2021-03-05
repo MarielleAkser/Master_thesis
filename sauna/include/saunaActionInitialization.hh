@@ -32,16 +32,17 @@
 
 #include "G4VUserActionInitialization.hh"
 
+
 /// Action initialization class.
 
 class saunaActionInitialization : public G4VUserActionInitialization
 {
   public:
     saunaActionInitialization();
-    virtual ~saunaActionInitialization();
+    ~saunaActionInitialization();
 
-    virtual void BuildForMaster() const;
-    virtual void Build() const;
+    void BuildForMaster() const override;
+    void Build() const override;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

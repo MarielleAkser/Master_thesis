@@ -29,15 +29,19 @@
 
 #include "saunaPhysicsList.hh"
 
+
 #include "G4DecayPhysics.hh"
 #include "G4EmStandardPhysics.hh"
 #include "G4RadioactiveDecayPhysics.hh"
+#include "G4ProductionCutsTable.hh"
+#include "G4SystemOfUnits.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaPhysicsList::saunaPhysicsList() 
-: G4VModularPhysicsList(){
-  SetVerboseLevel(1);
+: G4VModularPhysicsList()
+{
+  // SetVerboseLevel(1);
 
   // Default physics
   RegisterPhysics(new G4DecayPhysics());
@@ -49,10 +53,21 @@ saunaPhysicsList::saunaPhysicsList()
   RegisterPhysics(new G4RadioactiveDecayPhysics());
 }
 
+saunaPhysicsList::~saunaPhysicsList()
+{}
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-saunaPhysicsList::~saunaPhysicsList()
-{ 
+void saunaPhysicsList::ConstructParticle()
+{
+  // Call parent method. Replace it, if required
+  G4VModularPhysicsList::ConstructParticle();
+}
+
+void saunaPhysicsList::ConstructProcess()
+{
+// Call parent method. Replace it, if required
+G4VModularPhysicsList::ConstructProcess();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -60,4 +75,5 @@ saunaPhysicsList::~saunaPhysicsList()
 void saunaPhysicsList::SetCuts()
 {
   G4VUserPhysicsList::SetCuts();
+  DumpCutValuesTable();
 }  

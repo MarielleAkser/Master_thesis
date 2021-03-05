@@ -28,29 +28,25 @@
 /// \brief Implementation of the saunaEventAction class
 
 #include "saunaEventAction.hh"
-#include "saunaRunAction.hh"
+// #include "saunaRunAction.hh"
 
 #include "G4Event.hh"
 #include "G4RunManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-saunaEventAction::saunaEventAction(saunaRunAction* runAction)
-: G4UserEventAction(),
-  fRunAction(runAction),
-  fEdep(0.)
-{} 
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+saunaEventAction::saunaEventAction() :
+ G4UserEventAction()
+{;} 
 
 saunaEventAction::~saunaEventAction()
-{}
+{;}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void saunaEventAction::BeginOfEventAction(const G4Event*)
 {    
-  fEdep = 0.;
+  // fEdep = 0.;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -58,7 +54,7 @@ void saunaEventAction::BeginOfEventAction(const G4Event*)
 void saunaEventAction::EndOfEventAction(const G4Event*)
 {   
   // accumulate statistics in run action
-  fRunAction->AddEdep(fEdep);
+  // fRunAction->AddEdep(fEdep);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

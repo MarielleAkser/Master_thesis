@@ -33,37 +33,42 @@
 #include "G4LogicalVolume.hh"
 #include "G4Box.hh"
 #include "G4RunManager.hh"
-#include "G4ParticleGun.hh"
+
+
+#include "G4GeneralParticleSource.hh"
 #include "G4ParticleTable.hh"
-#include "G4ParticleDefinition.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4Event.hh"
+
+#include "G4ParticleDefinition.hh"
+
 #include "Randomize.hh"
+
+using namespace std;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaPrimaryGeneratorAction::saunaPrimaryGeneratorAction()
-: G4VUserPrimaryGeneratorAction(),
-  fParticleGun(0), 
-  fEnvelopeBox(0)
 {
-  G4int n_particle = 1;
-  fParticleGun  = new G4ParticleGun(n_particle);
+  fGPS = new G4GeneralParticleSource();
 
-  // default particle kinematic
-  G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
-  G4String particleName;
-  G4ParticleDefinition* particle
-    = particleTable->FindParticle(particleName="gamma");
-  fParticleGun->SetParticleDefinition(particle);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.,0.,1.));
-  fParticleGun->SetParticleEnergy(6.*MeV);
+  G4ParticleDefinition* particle;
+  particle = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
+  
+  fGPS->SetParticleDefinition(particle);
+  
+  fGPS->GetCurrentSource()->GetEneDist()->SetMonoEnergy(662*keV);
+  fGPS->GetCurrentSource()->GetAngDist()->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
+  fGPS->GetCurrentSource()->GetPosDist()->SetCentreCoords(G4ThreeVector(0,0,0));
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaPrimaryGeneratorAction::~saunaPrimaryGeneratorAction()
 {
-  delete fParticleGun;
+  delete fGPS;
+  // delete fParticleGun;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -103,11 +108,11 @@ void saunaPrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
   G4double size = 0.8; 
   G4double x0 = size * envSizeXY * (G4UniformRand()-0.5);
   G4double y0 = size * envSizeXY * (G4UniformRand()-0.5);
-  G4double z0 = -0.5 * envSizeZ;
+  G4double z0 = -0.15 * envSizeZ;
   
-  fParticleGun->SetParticlePosition(G4ThreeVector(x0,y0,z0));
+  // fGPS->SetParticlePosition(G4ThreeVector(x0,y0,z0));
 
-  fParticleGun->GeneratePrimaryVertex(anEvent);
+  fGPS->GeneratePrimaryVertex(anEvent);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -31,10 +31,11 @@
 #define saunaRunAction_h 1
 
 #include "G4UserRunAction.hh"
+#include "G4Run.hh"
+#include "G4ParticleDefinition.hh"
 #include "G4Accumulable.hh"
-#include "globals.hh"
 
-class G4Run;
+#include "globals.hh"
 
 /// Run action class
 ///
@@ -46,17 +47,21 @@ class saunaRunAction : public G4UserRunAction
 {
   public:
     saunaRunAction();
-    virtual ~saunaRunAction();
+    ~saunaRunAction();
+    
+    void BeginOfRunAction(const G4Run*);
+    void EndOfRunAction(const G4Run*);
 
-    // virtual G4Run* GenerateRun();
-    virtual void BeginOfRunAction(const G4Run*);
-    virtual void   EndOfRunAction(const G4Run*);
-
-    void AddEdep (G4double edep); 
+    void AddSecondary(const G4ParticleDefinition*, G4double energy);
+    void AddTrackLength(G4double length);
+    
 
   private:
-    G4Accumulable<G4double> fEdep;
-    G4Accumulable<G4double> fEdep2;
+  G4Accumulable<G4int> fNGammas;
+  G4Accumulable<G4int> fNElectrons;
+  G4Accumulable<G4double> fAverageGammaEnergy;
+  G4Accumulable<G4double> fAverageElectronEnergy;
+  G4Accumulable<G4double> fTotalTrackLength;
 };
 
 #endif
