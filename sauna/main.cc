@@ -66,11 +66,11 @@ int main(int argc,char** argv)
   runManager->SetUserInitialization(new saunaDetectorConstruction());
 
   // Physics list
-  runManager->SetUserInitialization(new saunaPhysicsList());
+  // runManager->SetUserInitialization(new saunaPhysicsList());
 
-  // G4VModularPhysicsList* physicsList = new FTFP_BERT;
-  // physicsList->SetVerboseLevel(1);
-  // runManager->SetUserInitialization(physicsList);
+  G4VModularPhysicsList* physicsList = new FTFP_BERT;
+  physicsList->SetVerboseLevel(1);
+  runManager->SetUserInitialization(physicsList);
     
   // User action initialization
   runManager->SetUserInitialization(new saunaActionInitialization());

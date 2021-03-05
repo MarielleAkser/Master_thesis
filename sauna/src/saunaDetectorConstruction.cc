@@ -133,11 +133,11 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   // shape1 = NaI(Tl) detector
   //  
   G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_SODIUM_IODIDE");
-  G4ThreeVector pos1 = G4ThreeVector(0, 2*cm, -7*cm);
+  G4ThreeVector pos1 = G4ThreeVector(0., 0., 0.);
         
   // Cylinder section shape       
   G4double shape1_rmin =  5.07*cm, shape1_rmax = 5.08*cm;
-  G4double shape1_hz = 6.35*cm;
+  G4double shape1_hz = (12.7/2)*cm;
   G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
   G4Tubs* solidShape1 =    
     new G4Tubs("Shape1", 
@@ -161,18 +161,20 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     checkOverlaps);          //overlaps checking
 
   //     
-  // Shape 2
+  // Shape 2 = beta detector (one side of NaI)
   //
-  G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_BONE_COMPACT_ICRU");
-  G4ThreeVector pos2 = G4ThreeVector(0, -1*cm, 7*cm);
-
   // Cylinder shape       
   G4double shape2_rmin = 6.35*mm, shape2_rmax = (35/2)*mm;
-  G4double shape2_hz = 50.8*mm;
+  G4double shape2_hz = (50.8/2)*mm;
   G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
   G4Tubs* solidShape2 =    
     new G4Tubs("Shape2", 
     shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
+
+  // The material and position
+  G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_BONE_COMPACT_ICRU");
+  G4ThreeVector pos2 = G4ThreeVector(0., 0., (shape1_rmin)); 
+
   
   G4LogicalVolume* logicShape2 =                         
     new G4LogicalVolume(solidShape2,         //its solid
@@ -187,11 +189,31 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
-                
-  // Set Shape2 as scoring volume
+  //     
+  // Shape 3 = beta detector (the other side of NaI)
+  // Cylinder shape, with the same dimentions as shape2    
+  G4Tubs* solidShape3 =    
+    new G4Tubs("Shape3", 
+    shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
+  
+  G4LogicalVolume* logicShape3 =                         
+    new G4LogicalVolume(solidShape3,         //its solid
+                        shape2_mat,          //its material (same as shape 2)
+                        "Shape3");           //its name
+               
+  new G4PVPlacement(0,                       //no rotation
+                    -pos2,                   //at position
+                    logicShape3,             //its logical volume
+                    "Shape3",                //its name
+                    logicEnv,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+                     
+  // Set Shape2 and 3 as scoring volume
   //
   fScoringVolume = logicShape2;
-
+  fScoringVolume = logicShape3;
   //
   //always return the physical World
   //
