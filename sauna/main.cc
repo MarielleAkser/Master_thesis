@@ -25,7 +25,7 @@
 //
 //
 /// \file main.cc
-/// \brief Main program of the sauna example
+/// \brief Main program of the sauna 
 
 #include "saunaDetectorConstruction.hh"
 #include "saunaActionInitialization.hh"
@@ -38,6 +38,7 @@
 
 #include "G4VisExecutive.hh"
 #include "G4UIExecutive.hh"
+#include "G4ScoringManager.hh"
 
 #include "Randomize.hh"
 
@@ -62,6 +63,9 @@ int main(int argc,char** argv)
 
   // Set mandatory initialization classes
   //
+  G4ScoringManager* scoringManager = G4ScoringManager::GetScoringManager();
+  scoringManager->SetVerboseLevel(1);
+
   // Detector construction
   runManager->SetUserInitialization(new saunaDetectorConstruction());
 

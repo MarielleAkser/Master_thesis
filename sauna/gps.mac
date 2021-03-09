@@ -14,16 +14,10 @@
 /event/verbose 0
 /tracking/verbose 1
 # 
-# gamma 6 MeV to the direction (0.,0.,1.)
+# gamma 662 keV from (0,0,0) and isotropic angle distribution
 #
-/gps/particle e-
+/gps/particle gamma
+/gps/ene/mono 662 keV
+/gps/pos/centre 0. 0. 0. cm
 /gps/ang/type iso
-/gps/direction 1 0 0
-/gps/pos/type Volume
-/gps/pos/shape Para
-/gps/pos/centre 4. 4. 4. cm
-/gps/pos/halfx 0.5 cm
-/gps/pos/halfy 0.5 cm
-/gps/pos/halfz 0.5 cm
-
-/run/beamOn 1
+/run/beamOn 100

@@ -50,6 +50,7 @@
 #include "G4VisAttributes.hh"
 #include "G4PhysicalConstants.hh"
 #include "G4SystemOfUnits.hh"
+#include "G4SDManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -65,33 +66,48 @@ saunaDetectorConstruction::~saunaDetectorConstruction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+//  void saunaDetectorConstruction::saunaConstructSDandField()
+//  {
+//    G4SDManager* sdManager = G4SDManager::GetSDMpointer();
+//   sdManager->SetVerboseLevel(2);        
+
+//   // Task 4c.1: Create 2 instances of G4MultiFunctionalDetector (for absorber and scintillator)
+//   G4MultiFunctionalDetector* absorberDetector = new G4MultiFunctionalDetector("absorber");
+//   // ...
+
+//   // Task 4c.1: Create 2 primitive scorers for the dose and assign them to respective detectors
+//   G4VPrimitiveScorer* absorberScorer = new G4PSEnergyDeposit("energy");
+//   absorberDetector->RegisterPrimitive(absorberScorer);
+//   // ...
+
+//   // Task 4c.1: Assign multi-functional detectors to the logical volumes and register them
+//   SetSensitiveDetector("absorber", absorberET);
+//   sdManager->AddNewDetector(absorberET);   
+
+
+//  }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 G4VPhysicalVolume* saunaDetectorConstruction::Construct()
 {  
 
   // Get nist material manager
   G4NistManager* nist = G4NistManager::Instance();
-  // G4Material* default_mat = nist->FindOrBuildMaterial("G4_AIR");
-  // G4Material* cryst_mat   = nist->FindOrBuildMaterial("Lu2SiO5");
-  
-  // Envelope parameters
-  //
-  G4double env_sizeXY = 20*cm, env_sizeZ = 30*cm;
-  G4Material* env_mat = nist->FindOrBuildMaterial("G4_WATER");
-   
-  // Option to switch on/off checking of volumes overlaps
-  //
   G4bool checkOverlaps = true;
 
   //     
   // World
   //
-  G4double world_sizeXY = 1.2*env_sizeXY;
-  G4double world_sizeZ  = 1.2*env_sizeZ;
+  G4double worldSizeX = 1 * m;
+  G4double worldSizeY = 1 * m;
+  G4double worldSizeZ = 1 * m;
+  
   G4Material* world_mat = nist->FindOrBuildMaterial("G4_AIR");
   
   G4Box* solidWorld =    
     new G4Box("World",                       //its name
-       1.0*world_sizeXY, 0.5*world_sizeXY, 0.5*world_sizeZ);     //its size
+       0.25*worldSizeX, 0.25*worldSizeY, 0.25*worldSizeZ);     //its size
       
   G4LogicalVolume* logicWorld =                         
     new G4LogicalVolume(solidWorld,          //its solid
@@ -108,27 +124,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                       0,                     //copy number
                       checkOverlaps);        //overlaps checking
                      
-  //     
-  // Envelope
-  //  
-  G4Box* solidEnv =    
-    new G4Box("Envelope",                    //its name
-        0.6*env_sizeXY, 0.6*env_sizeXY, 0.6*env_sizeZ); //its size
-      
-  G4LogicalVolume* logicEnv =                         
-    new G4LogicalVolume(solidEnv,            //its solid
-                        env_mat,             //its material
-                        "Envelope");         //its name
-               
-  new G4PVPlacement(0,                       //no rotation
-                    G4ThreeVector(),         //at (0,0,0)
-                    logicEnv,                //its logical volume
-                    "Envelope",              //its name
-                    logicWorld,              //its mother  volume
-                    false,                   //no boolean operation
-                    0,                       //copy number
-                    checkOverlaps);          //overlaps checking
- 
+
   //     
   // shape1 = NaI(Tl) detector
   //  
@@ -155,7 +151,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     pos1,                    //at position
                     logicShape1,             //its logical volume
                     "Shape1",                //its name
-                    logicEnv,                //its mother volume
+                    logicWorld,                //its mother volume
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
@@ -185,10 +181,12 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     pos2,                    //at position
                     logicShape2,             //its logical volume
                     "Shape2",                //its name
-                    logicEnv,                //its mother  volume
+                    logicWorld,                //its mother  volume
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
+  
+  
   //     
   // Shape 3 = beta detector (the other side of NaI)
   // Cylinder shape, with the same dimentions as shape2    
@@ -205,7 +203,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     -pos2,                   //at position
                     logicShape3,             //its logical volume
                     "Shape3",                //its name
-                    logicEnv,                //its mother  volume
+                    logicWorld,              //its mother  volume
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking

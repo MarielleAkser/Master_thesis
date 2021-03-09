@@ -39,10 +39,7 @@ class G4GeneralParticleSource;
 class G4Event;
 class G4Box;
 
-/// The primary generator action class with particle gun.
-///
-/// The default kinematic is a 6 MeV gamma, randomly distribued 
-/// in front of the phantom across 80% of the (X,Y) phantom size.
+/// The primary generator action class 
 
 class saunaPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 {
@@ -52,17 +49,9 @@ class saunaPrimaryGeneratorAction : public G4VUserPrimaryGeneratorAction
 
     // method from the base class
     void GeneratePrimaries(G4Event* anEvent) override;         
-  
-    // method to access particle gun
-    // const G4ParticleGun* GetParticleGun() const { return fParticleGun; }
-    // const G4GeneralParticleSource* const { return fGPS; }
-
-    // Set methods
-    // void SetRandomFlag(G4bool );
 
   private:
     G4GeneralParticleSource* fGPS;
-    G4Box* fEnvelopeBox;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
