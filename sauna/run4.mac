@@ -25,3 +25,9 @@
    /run/initialize
    /run/beamOn 20
    #
+
+# -- Dump scorers to CSV files
+   /score/dumpQuantityToFile boxMesh_1 eDep eDep.csv
+   /score/dumpQuantityToFile boxMesh_1 trackLength trackLength.csv
+   /score/dumpQuantityToFile boxMesh_1 totalCurrent totalCurrent.csv
+   /score/dumpQuantityToFile boxMesh_1 eCurrent eCurrent.csv
