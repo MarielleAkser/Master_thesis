@@ -51,6 +51,8 @@ set(sauna_SCRIPTS
   run1.mac
   run2.mac
   vis.mac
+  scoring.mac
+  draw.mac
   )
 
 foreach(_script ${sauna_SCRIPTS})

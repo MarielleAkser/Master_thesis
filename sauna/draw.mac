@@ -1,0 +1,7 @@
+#
+# Drawing projections
+#
+/score/drawProjection boxMesh_1 eDep
+/score/drawProjection boxMesh_1 trackLength
+/score/drawProjection boxMesh_1 totalCurrent
+/score/drawProjection boxMesh_1 eCurrent
