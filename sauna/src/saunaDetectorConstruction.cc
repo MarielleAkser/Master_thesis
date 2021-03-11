@@ -28,6 +28,11 @@
 /// \brief Implementation of the saunaDetectorConstruction class
 
 #include "saunaDetectorConstruction.hh"
+#include "G4Material.hh"
+#include "G4PVReplica.hh"
+#include "G4GlobalMagFieldMessenger.hh"
+#include "G4AutoDelete.hh"
+#include "G4SDChargedFilter.hh"
 
 #include "G4RunManager.hh"
 #include "G4NistManager.hh"
@@ -40,12 +45,18 @@
 #include "G4PVPlacement.hh"
 #include "G4SystemOfUnits.hh"
 
+
 #include "G4RotationMatrix.hh"
 #include "G4Transform3D.hh"
 #include "G4SDManager.hh"
+
 #include "G4MultiFunctionalDetector.hh"
+
 #include "G4VPrimitiveScorer.hh"
 #include "G4PSEnergyDeposit.hh"
+#include "G4PSTrackLength.hh"
+#include "G4Colour.hh"
+
 #include "G4PSDoseDeposit.hh"
 #include "G4VisAttributes.hh"
 #include "G4PhysicalConstants.hh"
@@ -63,29 +74,6 @@ saunaDetectorConstruction::saunaDetectorConstruction()
 
 saunaDetectorConstruction::~saunaDetectorConstruction()
 { }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-//  void saunaDetectorConstruction::saunaConstructSDandField()
-//  {
-//    G4SDManager* sdManager = G4SDManager::GetSDMpointer();
-//   sdManager->SetVerboseLevel(2);        
-
-//   // Task 4c.1: Create 2 instances of G4MultiFunctionalDetector (for absorber and scintillator)
-//   G4MultiFunctionalDetector* absorberDetector = new G4MultiFunctionalDetector("absorber");
-//   // ...
-
-//   // Task 4c.1: Create 2 primitive scorers for the dose and assign them to respective detectors
-//   G4VPrimitiveScorer* absorberScorer = new G4PSEnergyDeposit("energy");
-//   absorberDetector->RegisterPrimitive(absorberScorer);
-//   // ...
-
-//   // Task 4c.1: Assign multi-functional detectors to the logical volumes and register them
-//   SetSensitiveDetector("absorber", absorberET);
-//   sdManager->AddNewDetector(absorberET);   
-
-
-//  }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -135,6 +123,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4double shape1_rmin =  5.07*cm, shape1_rmax = 5.08*cm;
   G4double shape1_hz = (12.7/2)*cm;
   G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
+  
   G4Tubs* solidShape1 =    
     new G4Tubs("Shape1", 
     shape1_rmin, shape1_rmax, shape1_hz, shape1_phimin, shape1_phimax);
@@ -143,6 +132,17 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
     new G4LogicalVolume(solidShape1,         //its solid
                         shape1_mat,          //its material
                         "Shape1");           //its name
+
+// Make the detector sensiitive:
+G4MultiFunctionalDetector* absDetector = 
+  new G4MultiFunctionalDetector("Shape1_det");
+
+G4SDManager::GetSDMpointer()->AddNewDetector(absDetector);
+logicShape1->SetSensitiveDetector(absDetector);
+
+G4VPrimitiveScorer* primitive = new G4PSEnergyDeposit("Edep");
+absDetector->RegisterPrimitive(primitive);
+//
 
   G4RotationMatrix* rotationMatrix = new G4RotationMatrix();
   rotationMatrix->rotateX(90.*deg);
@@ -163,6 +163,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4double shape2_rmin = 6.35*mm, shape2_rmax = (35/2)*mm;
   G4double shape2_hz = (50.8/2)*mm;
   G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
+  
   G4Tubs* solidShape2 =    
     new G4Tubs("Shape2", 
     shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
@@ -217,5 +218,34 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   //
   return physWorld;
 }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+// void saunaDetectorConstruction::saunaConstructSDandField()
+//  {
+//   G4SDManager* sdManager = G4SDManager::GetSDMpointer();
+//   sdManager->SetVerboseLevel(2);
+
+
+//   G4MultiFunctionalDetector* absDetector = new G4MultiFuntionalDetector("shape1");
+//   G4SDManager::GetSDMpointer()->AddNewDetector(absDetector);
+
+//   G4VPrimitiveScorer* primitive = new G4PSEnergyDeposit("Edep");
+//   absDetector->RegisterPrimitive(primitive);
+
+//   SetSensitiveDetector("shape1", absDetector);
+
+//  }
+  
+  // Task 4c.1: Create 2 primitive scorers for the dose and assign them to respective detectors
+  
+  
+  // G4VPrimitiveScorer* eDepScorer = new G4PSEnergyDeposit("energy");
+  // absorberDetector->RegisterPrimitive(eDepScorer);
+  // ...
+
+  // Task 4c.1: Assign multi-functional detectors to the logical volumes and register them
+  // SetSensitiveDetector("absorber", fLogicTarget);
+  // sdManager->AddNewDetector(fLogicTarget);   
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
