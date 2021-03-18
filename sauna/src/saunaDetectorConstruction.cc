@@ -63,6 +63,7 @@
 #include "G4SystemOfUnits.hh"
 #include "G4SDManager.hh"
 
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaDetectorConstruction::saunaDetectorConstruction()
@@ -136,13 +137,17 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
 // Make the detector sensiitive:
 G4MultiFunctionalDetector* absDetector = 
   new G4MultiFunctionalDetector("Shape1_det");
-
 G4SDManager::GetSDMpointer()->AddNewDetector(absDetector);
+
 logicShape1->SetSensitiveDetector(absDetector);
+
+// G4VPrimitiveSensitivity* totalEnergyDep = 
+//   new G4PSEnergyDeposit("TotalEnergyDep");
+// logicShape1->Register(totalEnergyDep);
 
 G4VPrimitiveScorer* primitive = new G4PSEnergyDeposit("Edep");
 absDetector->RegisterPrimitive(primitive);
-//
+
 
   G4RotationMatrix* rotationMatrix = new G4RotationMatrix();
   rotationMatrix->rotateX(90.*deg);

@@ -44,11 +44,14 @@ class saunaEventAction : public G4UserEventAction
     void BeginOfEventAction(const G4Event* anEvent) override;
     void EndOfEventAction(const G4Event* anEvent) override;
 
-    // void AddEdep(G4double edep) { fEdep += edep; }
+  //   void AddEdep(G4double edep) { fEdep += edep; }
 
-  // private:
+  private:
+  // Numerical IDs for hit collections (-1 means unknown yet)
+  G4int fShape1Id { -1 };
+
   //   saunaRunAction* fRunAction;
-  //   G4double     fEdep;
+  //   G4double fEdep;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

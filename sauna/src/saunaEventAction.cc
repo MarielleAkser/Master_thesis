@@ -32,7 +32,13 @@
 
 #include "G4Event.hh"
 #include "G4RunManager.hh"
+#include "G4HCofThisEvent.hh"
+#include "G4THitsMap.hh"
 
+#include "G4NistManager.hh"
+#include "G4SDManager.hh"
+#include "globals.hh"
+#include "G4SystemOfUnits.hh"
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaEventAction::saunaEventAction() :
@@ -44,17 +50,51 @@ saunaEventAction::~saunaEventAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaEventAction::BeginOfEventAction(const G4Event*)
+void saunaEventAction::BeginOfEventAction(const G4Event* )
 {    
   // fEdep = 0.;
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaEventAction::EndOfEventAction(const G4Event*)
+void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
 {   
-  // accumulate statistics in run action
-  // fRunAction->AddEdep(fEdep);
+  G4SDManager* SDM = G4SDManager::GetSDMpointer();
+
+  // Retrieve the collectionID corresponding to hits in the NaI
+  // The variable fShape1Id is initialized to -1 in EventAction.hh) 
+  //so this block of code is executed only at the end of the first event. 
+  if ( fShape1Id < 0 ) 
+  {
+   fShape1Id 
+     = G4SDManager::GetSDMpointer()->GetCollectionID("Shape1_det");
+  }
+  //Hits collections  
+  // Get all hits-collections available for this events:
+  G4HCofThisEvent* HCE = anEvent->GetHCofThisEvent();
+  if(!HCE) return;
+               
+  //Retrieve the hits-collection in the NaI.
+  //This comes from a Geant4 multiscorer of type "G4PSEnergyDeposit", which scores 
+  //energy deposit.
+  G4THitsMap<G4double>* evtMap = 
+    dynamic_cast<G4THitsMap<G4double>*>(HCE->GetHC(fShape1Id));
+               
+  //Store the total energy in a variable
+  G4double totEdep = 0.;
+
+  //Sum all individual energy deposits in this event
+  for (auto pair : *(evtMap->GetMap()))
+  {
+    G4double edep = *(pair.second);  
+    //Sum the energy deposited in all crystals, irrespectively of threshold.
+    totEdep += edep; 
+  }  
+ 
+ if (totEdep>0)
+ {
+  G4cout << "The total energy deposited in this event is: " << totEdep/keV << " keV " << G4endl;
+ }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
