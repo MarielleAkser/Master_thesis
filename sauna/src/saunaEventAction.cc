@@ -28,7 +28,7 @@
 /// \brief Implementation of the saunaEventAction class
 
 #include "saunaEventAction.hh"
-// #include "saunaRunAction.hh"
+#include "saunaRunAction.hh"
 
 #include "G4Event.hh"
 #include "G4RunManager.hh"
@@ -39,6 +39,9 @@
 #include "G4SDManager.hh"
 #include "globals.hh"
 #include "G4SystemOfUnits.hh"
+
+#include "g4csv.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaEventAction::saunaEventAction() :
@@ -50,16 +53,14 @@ saunaEventAction::~saunaEventAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaEventAction::BeginOfEventAction(const G4Event* )
-{    
-  // fEdep = 0.;
-}
+void saunaEventAction::BeginOfEventAction(const G4Event*)
+{}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
 {   
-  G4SDManager* SDM = G4SDManager::GetSDMpointer();
+  // G4SDManager* SDM = G4SDManager::GetSDMpointer();
 
   // Retrieve the collectionID corresponding to hits in the NaI
   // The variable fShape1Id is initialized to -1 in EventAction.hh) 
@@ -93,6 +94,11 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
  
  if (totEdep>0)
  {
+  // Get analysis manager
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  analysisManager->Write();
+  // Fill ntuple
+  analysisManager->FillNtupleDColumn(0, totEdep);
   G4cout << "The total energy deposited in this event is: " << totEdep/keV << " keV " << G4endl;
  }
 }

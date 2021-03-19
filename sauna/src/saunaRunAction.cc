@@ -9,6 +9,9 @@
 #include "G4AccumulableManager.hh"
 #include "G4SystemOfUnits.hh"
 
+#include "g4csv.hh"
+// #include "G4AnalysisManager.hh"
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -31,17 +34,37 @@ saunaRunAction::saunaRunAction() :
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaRunAction::BeginOfRunAction(const G4Run*)
+void saunaRunAction::BeginOfRunAction(const G4Run* run)
 {
   // Reset all accumulables to their initial values
   G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
   accumulableManager->Reset();
+
+  // Create/get analysis manager
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  analysisManager->SetVerboseLevel(1);
+
+  // Open an output file
+  analysisManager->OpenFile("Edep_NaI");
+
+  // Creation of ntuple
+  analysisManager->CreateNtuple("MyNtuple", "Edep");
+  // X = D in CreateNtupleXColumn stands for G4double (I,F,D,S)
+  analysisManager->CreateNtupleDColumn("Energy deposit");
+  analysisManager->FinishNtuple();
+
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 void saunaRunAction::EndOfRunAction(const G4Run* run)
 {
+  // Get analysis manager
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  // Write and close the output file
+  analysisManager->Write();
+  analysisManager->CloseFile();
+
   //retrieve the number of events produced in the run
   G4int nofEvents = run->GetNumberOfEvent();
 
@@ -119,7 +142,7 @@ G4double energy)
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaRunAction::AddTrackLength(G4double trackLength)
-{
-  // Task 4a.2: Add the track length to the appropriate parameter
-}
+// void saunaRunAction::AddTrackLength(G4double trackLength)
+// {
+//   // Task 4a.2: Add the track length to the appropriate parameter
+// }

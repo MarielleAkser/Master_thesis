@@ -49,11 +49,11 @@ class saunaRunAction : public G4UserRunAction
     saunaRunAction();
     ~saunaRunAction();
     
-    void BeginOfRunAction(const G4Run*);
-    void EndOfRunAction(const G4Run*);
+    void BeginOfRunAction(const G4Run* aRun);
+    void EndOfRunAction(const G4Run* aRun);
 
     void AddSecondary(const G4ParticleDefinition*, G4double energy);
-    void AddTrackLength(G4double length);
+    // void AddTrackLength(G4double length);
     
 
   private:
