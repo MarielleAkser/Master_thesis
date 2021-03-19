@@ -52,6 +52,10 @@
 
 #include "G4MultiFunctionalDetector.hh"
 
+#include "G4VSensitiveDetector.hh"
+
+// #include "G4VPrimitiveSensitivity.hh"
+
 #include "G4VPrimitiveScorer.hh"
 #include "G4PSEnergyDeposit.hh"
 #include "G4PSTrackLength.hh"
@@ -135,18 +139,22 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                         "Shape1");           //its name
 
 // Make the detector sensiitive:
-G4MultiFunctionalDetector* absDetector = 
-  new G4MultiFunctionalDetector("Shape1_det");
-G4SDManager::GetSDMpointer()->AddNewDetector(absDetector);
+// G4MultiFunctionalDetector* absDetector = 
+//   new G4MultiFunctionalDetector("shape1_det");
 
-logicShape1->SetSensitiveDetector(absDetector);
+//   G4SDManager::GetSDMpointer()->AddNewDetector(absDetector);
 
-// G4VPrimitiveSensitivity* totalEnergyDep = 
-//   new G4PSEnergyDeposit("TotalEnergyDep");
-// logicShape1->Register(totalEnergyDep);
+// // G4VPrimitiveSensitivity* totalEnergyDep = 
+// //   new G4PSEnergyDeposit("TotalEnergyDep");
 
-G4VPrimitiveScorer* primitive = new G4PSEnergyDeposit("Edep");
-absDetector->RegisterPrimitive(primitive);
+// // logicShape1->Register(totalEnergyDep);
+
+// G4VPrimitiveScorer* primitive = new G4PSEnergyDeposit("Edep");
+// absDetector->RegisterPrimitive(primitive);
+
+// logicShape1->SetSensitiveDetector(absDetector);
+
+
 
 
   G4RotationMatrix* rotationMatrix = new G4RotationMatrix();
@@ -226,21 +234,27 @@ absDetector->RegisterPrimitive(primitive);
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-// void saunaDetectorConstruction::saunaConstructSDandField()
-//  {
-//   G4SDManager* sdManager = G4SDManager::GetSDMpointer();
-//   sdManager->SetVerboseLevel(2);
+void saunaDetectorConstruction::saunaConstructSDandField()
+ {
+  // G4SDManager* sdManager = G4SDManager::GetSDMpointer();
+  // sdManager->SetVerboseLevel(2);
+
+  G4MultiFunctionalDetector* absDetector = new G4MultiFunctionalDetector("shape1_det");
+
+  G4VPrimitiveScorer* primitive = new G4PSEnergyDeposit("Edep");
+  absDetector->RegisterPrimitive(primitive);
+  // G4VPrimitiveSensitivity* totalEnergyDep = new G4PSEnergyDeposit("Edep");
+  
+  // absDetector->Register(totalEnergyDep); 
+
+  G4SDManager::GetSDMpointer()->AddNewDetector(absDetector);
+  SetSensitiveDetector("NaI",absDetector);
 
 
-//   G4MultiFunctionalDetector* absDetector = new G4MultiFuntionalDetector("shape1");
-//   G4SDManager::GetSDMpointer()->AddNewDetector(absDetector);
+  // 
 
-//   G4VPrimitiveScorer* primitive = new G4PSEnergyDeposit("Edep");
-//   absDetector->RegisterPrimitive(primitive);
-
-//   SetSensitiveDetector("shape1", absDetector);
-
-//  }
+  
+ }
   
   // Task 4c.1: Create 2 primitive scorers for the dose and assign them to respective detectors
   

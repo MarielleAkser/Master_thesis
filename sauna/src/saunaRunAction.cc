@@ -10,6 +10,7 @@
 #include "G4SystemOfUnits.hh"
 
 #include "g4csv.hh"
+// #include "G4GenericAnalysisManager.hh"
 // #include "G4AnalysisManager.hh"
 
 
@@ -50,7 +51,7 @@ void saunaRunAction::BeginOfRunAction(const G4Run* run)
   // Creation of ntuple
   analysisManager->CreateNtuple("MyNtuple", "Edep");
   // X = D in CreateNtupleXColumn stands for G4double (I,F,D,S)
-  analysisManager->CreateNtupleDColumn("Energy deposit");
+  analysisManager->CreateNtupleDColumn("Energy_deposit");
   analysisManager->FinishNtuple();
 
 }
@@ -63,6 +64,8 @@ void saunaRunAction::EndOfRunAction(const G4Run* run)
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   // Write and close the output file
   analysisManager->Write();
+  // analysisManager->FillNtupleDColumn(0, 23.);
+  // analysisManager->AddNtupleRow();
   analysisManager->CloseFile();
 
   //retrieve the number of events produced in the run
@@ -120,6 +123,7 @@ saunaRunAction::~saunaRunAction()
 // Task 4c.3: Uncomment the following 2 lines to enable analysis.
 /* G4AnalysisManager* man = G4AnalysisManager::Instance();
 man->Write(); */
+delete G4AnalysisManager::Instance();
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

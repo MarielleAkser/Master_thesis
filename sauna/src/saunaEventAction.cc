@@ -29,6 +29,7 @@
 
 #include "saunaEventAction.hh"
 #include "saunaRunAction.hh"
+#include "saunaDetectorConstruction.hh"
 
 #include "G4Event.hh"
 #include "G4RunManager.hh"
@@ -41,6 +42,7 @@
 #include "G4SystemOfUnits.hh"
 
 #include "g4csv.hh"
+#include "G4GenericAnalysisManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -60,16 +62,23 @@ void saunaEventAction::BeginOfEventAction(const G4Event*)
 
 void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
 {   
-  // G4SDManager* SDM = G4SDManager::GetSDMpointer();
+  G4cout << "start of EndOfEventAction: " << G4endl;
+  G4SDManager* SDM = G4SDManager::GetSDMpointer();
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   // Retrieve the collectionID corresponding to hits in the NaI
   // The variable fShape1Id is initialized to -1 in EventAction.hh) 
   //so this block of code is executed only at the end of the first event. 
-  if ( fShape1Id < 0 ) 
+  if ( fShape1Id == -1 ) 
   {
+    G4cout << "Inside if and the Id of detector is: " << G4endl;
    fShape1Id 
-     = G4SDManager::GetSDMpointer()->GetCollectionID("Shape1_det");
+     = G4SDManager::GetSDMpointer()->GetCollectionID("shape1_det/Edep");
+    
+    G4cout << fShape1Id << G4endl;
   }
+
+  
   //Hits collections  
   // Get all hits-collections available for this events:
   G4HCofThisEvent* HCE = anEvent->GetHCofThisEvent();
@@ -91,14 +100,23 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
     //Sum the energy deposited in all crystals, irrespectively of threshold.
     totEdep += edep; 
   }  
+
+  G4cout <<"Total energy deposit is:" << totEdep << G4endl;
+
+  //  Get analysis manager
+  
+  // Fill ntuple
+  analysisManager->FillNtupleDColumn(0, totEdep);
+  analysisManager->AddNtupleRow();
  
  if (totEdep>0)
  {
-  // Get analysis manager
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  analysisManager->Write();
-  // Fill ntuple
-  analysisManager->FillNtupleDColumn(0, totEdep);
+  // // Get analysis manager
+  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  // // Fill ntuple
+  // analysisManager->FillNtupleDColumn(0, totEdep);
+  // analysisManager->AddNtupleRow();
+
   G4cout << "The total energy deposited in this event is: " << totEdep/keV << " keV " << G4endl;
  }
 }

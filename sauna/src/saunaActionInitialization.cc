@@ -53,10 +53,10 @@ void saunaActionInitialization::Build() const
 
   saunaRunAction* theRunAction = new saunaRunAction;
   SetUserAction(theRunAction);
-  SetUserAction(new saunaStackingAction(theRunAction));
+  // SetUserAction(new saunaStackingAction(theRunAction));
   
-  // saunaEventAction* eventAction = new saunaEventAction(runAction);
-  // SetUserAction(eventAction);
+  saunaEventAction* theEventAction = new saunaEventAction;
+  SetUserAction(theEventAction);
   
   // SetUserAction(new saunaSteppingAction(eventAction));
 }  

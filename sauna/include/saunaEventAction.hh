@@ -47,6 +47,7 @@ class saunaEventAction : public G4UserEventAction
   //   void AddEdep(G4double edep) { fEdep += edep; }
 
   private:
+  
   // Numerical IDs for hit collections (-1 means unknown yet)
   G4int fShape1Id { -1 };
 

@@ -44,7 +44,7 @@ class saunaDetectorConstruction : public G4VUserDetectorConstruction
     saunaDetectorConstruction();
     virtual ~saunaDetectorConstruction();
 
-    G4VPhysicalVolume* Construct() override;
+    virtual G4VPhysicalVolume* Construct();
     void saunaConstructSDandField();
     G4LogicalVolume* GetScoringVolume() const { return fScoringVolume; }
 
