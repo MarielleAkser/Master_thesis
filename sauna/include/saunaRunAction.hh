@@ -35,6 +35,8 @@
 #include "G4ParticleDefinition.hh"
 #include "G4Accumulable.hh"
 
+#include "G4THitsMap.hh"
+
 #include "globals.hh"
 
 /// Run action class
@@ -62,6 +64,11 @@ class saunaRunAction : public G4UserRunAction
   G4Accumulable<G4double> fAverageGammaEnergy;
   G4Accumulable<G4double> fAverageElectronEnergy;
   G4Accumulable<G4double> fTotalTrackLength;
+
+// Numerical IDs for hit collections (-1 means unknown yet)
+  G4int fshape1ID;
+
+  G4THitsMap<G4double> energyDep; 
 };
 
 #endif

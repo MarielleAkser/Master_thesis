@@ -63,19 +63,19 @@ void saunaEventAction::BeginOfEventAction(const G4Event*)
 void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
 {   
   G4cout << "start of EndOfEventAction: " << G4endl;
-  G4SDManager* SDM = G4SDManager::GetSDMpointer();
+  // G4SDManager* SDM = G4SDManager::GetSDMpointer();
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   // Retrieve the collectionID corresponding to hits in the NaI
-  // The variable fShape1Id is initialized to -1 in EventAction.hh) 
+  // The variable fshape1ID is initialized to -1 in EventAction.hh) 
   //so this block of code is executed only at the end of the first event. 
-  if ( fShape1Id == -1 ) 
+  if ( fshape1ID == -1 ) 
   {
-    G4cout << "Inside if and the Id of detector is: " << G4endl;
-   fShape1Id 
+    G4cout << "Inside if, and the ID of detector is: " << G4endl;
+   fshape1ID 
      = G4SDManager::GetSDMpointer()->GetCollectionID("shape1_det/Edep");
     
-    G4cout << fShape1Id << G4endl;
+    G4cout << fshape1ID << G4endl;
   }
 
   
@@ -88,7 +88,7 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
   //This comes from a Geant4 multiscorer of type "G4PSEnergyDeposit", which scores 
   //energy deposit.
   G4THitsMap<G4double>* evtMap = 
-    dynamic_cast<G4THitsMap<G4double>*>(HCE->GetHC(fShape1Id));
+    dynamic_cast<G4THitsMap<G4double>*>(HCE->GetHC(fshape1ID));
                
   //Store the total energy in a variable
   G4double totEdep = 0.;

@@ -3,11 +3,14 @@
 /// \brief Implementation of the saunaEventAction class
 
 #include "saunaRunAction.hh"
+#include "saunaDetectorConstruction.hh"
 
 #include "G4Gamma.hh"
 #include "G4Electron.hh"
 #include "G4AccumulableManager.hh"
 #include "G4SystemOfUnits.hh"
+
+#include "G4SDManager.hh"
 
 #include "g4csv.hh"
 // #include "G4GenericAnalysisManager.hh"
@@ -22,8 +25,8 @@ saunaRunAction::saunaRunAction() :
  fNElectrons("NElectrons", 0),
  fAverageGammaEnergy("AvgGammaEnergy",0.),
  fAverageElectronEnergy("AvgElectronEnergy",0.),
- fTotalTrackLength("TotalTrackLength",0.)
- {
+ fTotalTrackLength("TotalTrackLength",0.),
+ fshape1ID(-1){
     // Register created accumulables
     G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
     accumulableManager->RegisterAccumulable(fNGammas);
@@ -41,6 +44,11 @@ void saunaRunAction::BeginOfRunAction(const G4Run* run)
   G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
   accumulableManager->Reset();
 
+  if (fshape1ID < 0)
+  {
+    fshape1ID = G4SDManager::GetSDMpointer()->GetCollectionID("shape1_det/Edep");
+    G4cout << "In BeginOfRunAction, and the ID of detector is: " << fshape1ID << G4endl;
+  }
   // Create/get analysis manager
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->SetVerboseLevel(1);

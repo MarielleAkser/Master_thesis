@@ -89,9 +89,11 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4NistManager* nist = G4NistManager::Instance();
   G4bool checkOverlaps = true;
 
-  //     
+  
+  // ------------------------------------------------------------------    
   // World
-  //
+  // ------------------------------------------------------------------
+  
   G4double worldSizeX = 1 * m;
   G4double worldSizeY = 1 * m;
   G4double worldSizeZ = 1 * m;
@@ -118,9 +120,12 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                       checkOverlaps);        //overlaps checking
                      
 
-  //     
+
+  
+  // ------------------------------------------------------------------
   // shape1 = NaI(Tl) detector
-  //  
+  // ------------------------------------------------------------------
+  
   G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_SODIUM_IODIDE");
   G4ThreeVector pos1 = G4ThreeVector(0., 0., 0.);
         
@@ -139,6 +144,23 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                         "Shape1");           //its name
 
 // Make the detector sensiitive:
+
+  // G4MultiFunctionalDetector* scorerShape1 = 
+  //   new G4MultiFunctionalDetector("shape1_det");
+
+  // G4VPrimitiveScorer* energyDep = new G4PSEnergyDeposit("Edep");
+
+  // G4SDManager::GetSDMpointer()->AddNewDetector(scorerShape1);
+
+  // scorerShape1->RegisterPrimitive(energyDep);
+
+  // logicShape1->SetSensitiveDetector(scorerShape1);
+
+
+  
+
+
+
 // G4MultiFunctionalDetector* absDetector = 
 //   new G4MultiFunctionalDetector("shape1_det");
 
@@ -169,9 +191,11 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
 
-  //     
+
+  // ------------------------------------------------------------------
   // Shape 2 = beta detector (one side of NaI)
-  //
+  // ------------------------------------------------------------------
+  
   // Cylinder shape       
   G4double shape2_rmin = 6.35*mm, shape2_rmax = (35/2)*mm;
   G4double shape2_hz = (50.8/2)*mm;
@@ -201,8 +225,11 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     checkOverlaps);          //overlaps checking
   
   
-  //     
+  
+  // ------------------------------------------------------------------
   // Shape 3 = beta detector (the other side of NaI)
+  // ------------------------------------------------------------------
+  
   // Cylinder shape, with the same dimentions as shape2    
   G4Tubs* solidShape3 =    
     new G4Tubs("Shape3", 
@@ -234,37 +261,32 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaDetectorConstruction::saunaConstructSDandField()
+void saunaDetectorConstruction::ConstructSDandField()
  {
-  // G4SDManager* sdManager = G4SDManager::GetSDMpointer();
-  // sdManager->SetVerboseLevel(2);
+   G4SDManager::GetSDMpointer()->SetVerboseLevel(1);
 
-  G4MultiFunctionalDetector* absDetector = new G4MultiFunctionalDetector("shape1_det");
+  G4MultiFunctionalDetector* scorerShape1 = new G4MultiFunctionalDetector("shape1_det");
+  G4SDManager::GetSDMpointer()->AddNewDetector(scorerShape1);
 
-  G4VPrimitiveScorer* primitive = new G4PSEnergyDeposit("Edep");
-  absDetector->RegisterPrimitive(primitive);
-  // G4VPrimitiveSensitivity* totalEnergyDep = new G4PSEnergyDeposit("Edep");
+  G4VPrimitiveScorer* primitiv1 = new G4PSEnergyDeposit("Edep");
+  scorerShape1->RegisterPrimitive(primitiv1);
   
-  // absDetector->Register(totalEnergyDep); 
+  // absDetector->GetCollectionID(0);
 
-  G4SDManager::GetSDMpointer()->AddNewDetector(absDetector);
-  SetSensitiveDetector("NaI",absDetector);
+  SetSensitiveDetector("Shape1",scorerShape1);
+
+  // G4MultiFunctionalDetector* scorerShape1 = 
+  //   new G4MultiFunctionalDetector("shape1_det");
+
+  // G4VPrimitiveScorer* energyDep = new G4PSEnergyDeposit("Edep");
+
+  // G4SDManager::GetSDMpointer()->AddNewDetector(scorerShape1);
+
+  // scorerShape1->RegisterPrimitive(energyDep);
+
+  // logicShape1->SetSensitiveDetector(scorerShape1);
 
 
-  // 
-
-  
  }
-  
-  // Task 4c.1: Create 2 primitive scorers for the dose and assign them to respective detectors
-  
-  
-  // G4VPrimitiveScorer* eDepScorer = new G4PSEnergyDeposit("energy");
-  // absorberDetector->RegisterPrimitive(eDepScorer);
-  // ...
-
-  // Task 4c.1: Assign multi-functional detectors to the logical volumes and register them
-  // SetSensitiveDetector("absorber", fLogicTarget);
-  // sdManager->AddNewDetector(fLogicTarget);   
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
