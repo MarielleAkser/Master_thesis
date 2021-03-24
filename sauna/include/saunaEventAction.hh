@@ -31,6 +31,7 @@
 #define saunaEventAction_h 1
 
 #include "G4UserEventAction.hh"
+#include "G4THitsMap.hh"
 #include "globals.hh"
 
 /// Event action class
@@ -41,18 +42,14 @@ class saunaEventAction : public G4UserEventAction
     saunaEventAction();
     ~saunaEventAction();
 
-    void BeginOfEventAction(const G4Event* anEvent) override;
-    void EndOfEventAction(const G4Event* anEvent) override;
-
-  //   void AddEdep(G4double edep) { fEdep += edep; }
+    virtual void BeginOfEventAction(const G4Event* anEvent) override;
+    virtual void EndOfEventAction(const G4Event* anEvent) override;
 
   private:
-  
   // Numerical IDs for hit collections (-1 means unknown yet)
   G4int fshape1ID { -1 };
 
-  //   saunaRunAction* fRunAction;
-  //   G4double fEdep;
+
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

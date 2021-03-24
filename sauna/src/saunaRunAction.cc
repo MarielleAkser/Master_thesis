@@ -11,6 +11,7 @@
 #include "G4SystemOfUnits.hh"
 
 #include "G4SDManager.hh"
+#include "G4RunManager.hh"
 
 #include "g4csv.hh"
 // #include "G4GenericAnalysisManager.hh"
@@ -25,8 +26,7 @@ saunaRunAction::saunaRunAction() :
  fNElectrons("NElectrons", 0),
  fAverageGammaEnergy("AvgGammaEnergy",0.),
  fAverageElectronEnergy("AvgElectronEnergy",0.),
- fTotalTrackLength("TotalTrackLength",0.),
- fshape1ID(-1){
+ fTotalTrackLength("TotalTrackLength",0.){
     // Register created accumulables
     G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
     accumulableManager->RegisterAccumulable(fNGammas);
@@ -38,29 +38,34 @@ saunaRunAction::saunaRunAction() :
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+saunaRunAction::~saunaRunAction()
+{
+  delete G4AnalysisManager::Instance();
+}
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
 void saunaRunAction::BeginOfRunAction(const G4Run* run)
 {
+  G4RunManager::GetRunManager()->SetRandomNumberStore(false);
+
   // Reset all accumulables to their initial values
   G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
   accumulableManager->Reset();
 
-  if (fshape1ID < 0)
-  {
-    fshape1ID = G4SDManager::GetSDMpointer()->GetCollectionID("shape1_det/Edep");
-    G4cout << "In BeginOfRunAction, and the ID of detector is: " << fshape1ID << G4endl;
-  }
   // Create/get analysis manager
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->SetVerboseLevel(1);
+  analysisManager->SetFirstNtupleId(1);
 
-  // Open an output file
-  analysisManager->OpenFile("Edep_NaI");
-
-  // Creation of ntuple
-  analysisManager->CreateNtuple("MyNtuple", "Edep");
-  // X = D in CreateNtupleXColumn stands for G4double (I,F,D,S)
-  analysisManager->CreateNtupleDColumn("Energy_deposit");
+  //Create a column ntuple
+  analysisManager->CreateNtuple("NaI", "EnergyDeposit");
+  // 1) total energy released in the crystals (double), MeV
+  analysisManager->CreateNtupleDColumn("Edep");
+  //ok, done
   analysisManager->FinishNtuple();
+
+  // Create a new output file
+  analysisManager->OpenFile("Edep");
 
 }
 
@@ -72,8 +77,6 @@ void saunaRunAction::EndOfRunAction(const G4Run* run)
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   // Write and close the output file
   analysisManager->Write();
-  // analysisManager->FillNtupleDColumn(0, 23.);
-  // analysisManager->AddNtupleRow();
   analysisManager->CloseFile();
 
   //retrieve the number of events produced in the run
@@ -124,15 +127,6 @@ void saunaRunAction::EndOfRunAction(const G4Run* run)
   }
 }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-saunaRunAction::~saunaRunAction()
-{
-// Task 4c.3: Uncomment the following 2 lines to enable analysis.
-/* G4AnalysisManager* man = G4AnalysisManager::Instance();
-man->Write(); */
-delete G4AnalysisManager::Instance();
-}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -153,8 +147,3 @@ G4double energy)
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-// void saunaRunAction::AddTrackLength(G4double trackLength)
-// {
-//   // Task 4a.2: Add the track length to the appropriate parameter
-// }

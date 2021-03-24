@@ -32,7 +32,6 @@
 
 #include "saunaEventAction.hh"
 #include "saunaRunAction.hh"
-#include "saunaStackingAction.hh"
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -53,17 +52,13 @@ void saunaActionInitialization::Build() const
 
   saunaRunAction* theRunAction = new saunaRunAction;
   SetUserAction(theRunAction);
-  // SetUserAction(new saunaStackingAction(theRunAction));
   
   saunaEventAction* theEventAction = new saunaEventAction;
   SetUserAction(theEventAction);
-  
-  // SetUserAction(new saunaSteppingAction(eventAction));
-}  
+}
 
 void saunaActionInitialization::BuildForMaster() const
 {
-  // saunaRunAction* runAction = new saunaRunAction;
   SetUserAction(new saunaRunAction());
 }
 

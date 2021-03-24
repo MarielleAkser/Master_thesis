@@ -54,6 +54,8 @@
 
 #include "G4VSensitiveDetector.hh"
 
+#include "G4SDParticleWithEnergyFilter.hh"
+
 // #include "G4VPrimitiveSensitivity.hh"
 
 #include "G4VPrimitiveScorer.hh"
@@ -120,8 +122,6 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                       checkOverlaps);        //overlaps checking
                      
 
-
-  
   // ------------------------------------------------------------------
   // shape1 = NaI(Tl) detector
   // ------------------------------------------------------------------
@@ -143,41 +143,6 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                         shape1_mat,          //its material
                         "Shape1");           //its name
 
-// Make the detector sensiitive:
-
-  // G4MultiFunctionalDetector* scorerShape1 = 
-  //   new G4MultiFunctionalDetector("shape1_det");
-
-  // G4VPrimitiveScorer* energyDep = new G4PSEnergyDeposit("Edep");
-
-  // G4SDManager::GetSDMpointer()->AddNewDetector(scorerShape1);
-
-  // scorerShape1->RegisterPrimitive(energyDep);
-
-  // logicShape1->SetSensitiveDetector(scorerShape1);
-
-
-  
-
-
-
-// G4MultiFunctionalDetector* absDetector = 
-//   new G4MultiFunctionalDetector("shape1_det");
-
-//   G4SDManager::GetSDMpointer()->AddNewDetector(absDetector);
-
-// // G4VPrimitiveSensitivity* totalEnergyDep = 
-// //   new G4PSEnergyDeposit("TotalEnergyDep");
-
-// // logicShape1->Register(totalEnergyDep);
-
-// G4VPrimitiveScorer* primitive = new G4PSEnergyDeposit("Edep");
-// absDetector->RegisterPrimitive(primitive);
-
-// logicShape1->SetSensitiveDetector(absDetector);
-
-
-
 
   G4RotationMatrix* rotationMatrix = new G4RotationMatrix();
   rotationMatrix->rotateX(90.*deg);
@@ -197,32 +162,32 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   // ------------------------------------------------------------------
   
   // Cylinder shape       
-  G4double shape2_rmin = 6.35*mm, shape2_rmax = (35/2)*mm;
-  G4double shape2_hz = (50.8/2)*mm;
-  G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
+  // G4double shape2_rmin = 6.35*mm, shape2_rmax = (35/2)*mm;
+  // G4double shape2_hz = (50.8/2)*mm;
+  // G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
   
-  G4Tubs* solidShape2 =    
-    new G4Tubs("Shape2", 
-    shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
+  // G4Tubs* solidShape2 =    
+  //   new G4Tubs("Shape2", 
+  //   shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
 
-  // The material and position
-  G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_BONE_COMPACT_ICRU");
-  G4ThreeVector pos2 = G4ThreeVector(0., 0., (shape1_rmin)); 
+  // // The material and position
+  // G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_BONE_COMPACT_ICRU");
+  // G4ThreeVector pos2 = G4ThreeVector(0., 0., (shape1_rmin)); 
 
   
-  G4LogicalVolume* logicShape2 =                         
-    new G4LogicalVolume(solidShape2,         //its solid
-                        shape2_mat,          //its material
-                        "Shape2");           //its name
+  // G4LogicalVolume* logicShape2 =                         
+  //   new G4LogicalVolume(solidShape2,         //its solid
+  //                       shape2_mat,          //its material
+  //                       "Shape2");           //its name
                
-  new G4PVPlacement(0,                       //no rotation
-                    pos2,                    //at position
-                    logicShape2,             //its logical volume
-                    "Shape2",                //its name
-                    logicWorld,                //its mother  volume
-                    false,                   //no boolean operation
-                    0,                       //copy number
-                    checkOverlaps);          //overlaps checking
+  // new G4PVPlacement(0,                       //no rotation
+  //                   pos2,                    //at position
+  //                   logicShape2,             //its logical volume
+  //                   "Shape2",                //its name
+  //                   logicWorld,                //its mother  volume
+  //                   false,                   //no boolean operation
+  //                   0,                       //copy number
+  //                   checkOverlaps);          //overlaps checking
   
   
   
@@ -231,31 +196,30 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   // ------------------------------------------------------------------
   
   // Cylinder shape, with the same dimentions as shape2    
-  G4Tubs* solidShape3 =    
-    new G4Tubs("Shape3", 
-    shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
+  // G4Tubs* solidShape3 =    
+  //   new G4Tubs("Shape3", 
+  //   shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
   
-  G4LogicalVolume* logicShape3 =                         
-    new G4LogicalVolume(solidShape3,         //its solid
-                        shape2_mat,          //its material (same as shape 2)
-                        "Shape3");           //its name
+  // G4LogicalVolume* logicShape3 =                         
+  //   new G4LogicalVolume(solidShape3,         //its solid
+  //                       shape2_mat,          //its material (same as shape 2)
+  //                       "Shape3");           //its name
                
-  new G4PVPlacement(0,                       //no rotation
-                    -pos2,                   //at position
-                    logicShape3,             //its logical volume
-                    "Shape3",                //its name
-                    logicWorld,              //its mother  volume
-                    false,                   //no boolean operation
-                    0,                       //copy number
-                    checkOverlaps);          //overlaps checking
+  // new G4PVPlacement(0,                       //no rotation
+  //                   -pos2,                   //at position
+  //                   logicShape3,             //its logical volume
+  //                   "Shape3",                //its name
+  //                   logicWorld,              //its mother  volume
+  //                   false,                   //no boolean operation
+  //                   0,                       //copy number
+  //                   checkOverlaps);          //overlaps checking
                      
-  // Set Shape2 and 3 as scoring volume
-  //
-  fScoringVolume = logicShape2;
-  fScoringVolume = logicShape3;
+  // // Set Shape2 and 3 as scoring volume
+  // //
+  // fScoringVolume = logicShape2;
+  // fScoringVolume = logicShape3;
   //
   //always return the physical World
-  //
   return physWorld;
 }
 
@@ -269,23 +233,16 @@ void saunaDetectorConstruction::ConstructSDandField()
   G4SDManager::GetSDMpointer()->AddNewDetector(scorerShape1);
 
   G4VPrimitiveScorer* primitiv1 = new G4PSEnergyDeposit("Edep");
+
+  // Filter to only read gamma-rays:
+  G4SDParticleFilter* filter =
+    new G4SDParticleFilter("gammaFilter");
+  filter->add("gamma");
+
+  primitiv1->SetFilter(filter);
   scorerShape1->RegisterPrimitive(primitiv1);
-  
-  // absDetector->GetCollectionID(0);
 
   SetSensitiveDetector("Shape1",scorerShape1);
-
-  // G4MultiFunctionalDetector* scorerShape1 = 
-  //   new G4MultiFunctionalDetector("shape1_det");
-
-  // G4VPrimitiveScorer* energyDep = new G4PSEnergyDeposit("Edep");
-
-  // G4SDManager::GetSDMpointer()->AddNewDetector(scorerShape1);
-
-  // scorerShape1->RegisterPrimitive(energyDep);
-
-  // logicShape1->SetSensitiveDetector(scorerShape1);
-
 
  }
 

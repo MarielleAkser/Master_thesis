@@ -55,7 +55,6 @@ class saunaRunAction : public G4UserRunAction
     void EndOfRunAction(const G4Run* aRun);
 
     void AddSecondary(const G4ParticleDefinition*, G4double energy);
-    // void AddTrackLength(G4double length);
     
 
   private:
@@ -65,10 +64,6 @@ class saunaRunAction : public G4UserRunAction
   G4Accumulable<G4double> fAverageElectronEnergy;
   G4Accumulable<G4double> fTotalTrackLength;
 
-// Numerical IDs for hit collections (-1 means unknown yet)
-  G4int fshape1ID;
-
-  G4THitsMap<G4double> energyDep; 
 };
 
 #endif

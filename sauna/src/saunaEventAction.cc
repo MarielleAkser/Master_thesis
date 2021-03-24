@@ -62,8 +62,6 @@ void saunaEventAction::BeginOfEventAction(const G4Event*)
 
 void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
 {   
-  G4cout << "start of EndOfEventAction: " << G4endl;
-  // G4SDManager* SDM = G4SDManager::GetSDMpointer();
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   // Retrieve the collectionID corresponding to hits in the NaI
@@ -71,54 +69,52 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
   //so this block of code is executed only at the end of the first event. 
   if ( fshape1ID == -1 ) 
   {
-    G4cout << "Inside if, and the ID of detector is: " << G4endl;
    fshape1ID 
      = G4SDManager::GetSDMpointer()->GetCollectionID("shape1_det/Edep");
-    
-    G4cout << fshape1ID << G4endl;
   }
 
-  
-  //Hits collections  
-  // Get all hits-collections available for this events:
-  G4HCofThisEvent* HCE = anEvent->GetHCofThisEvent();
-  if(!HCE) return;
-               
-  //Retrieve the hits-collection in the NaI.
-  //This comes from a Geant4 multiscorer of type "G4PSEnergyDeposit", which scores 
-  //energy deposit.
-  G4THitsMap<G4double>* evtMap = 
-    dynamic_cast<G4THitsMap<G4double>*>(HCE->GetHC(fshape1ID));
-               
   //Store the total energy in a variable
   G4double totEdep = 0.;
-
-  //Sum all individual energy deposits in this event
-  for (auto pair : *(evtMap->GetMap()))
-  {
-    G4double edep = *(pair.second);  
-    //Sum the energy deposited in all crystals, irrespectively of threshold.
-    totEdep += edep; 
-  }  
-
-  G4cout <<"Total energy deposit is:" << totEdep << G4endl;
-
-  //  Get analysis manager
   
-  // Fill ntuple
-  analysisManager->FillNtupleDColumn(0, totEdep);
-  analysisManager->AddNtupleRow();
- 
- if (totEdep>0)
- {
-  // // Get analysis manager
-  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-  // // Fill ntuple
-  // analysisManager->FillNtupleDColumn(0, totEdep);
-  // analysisManager->AddNtupleRow();
+  //Hits collections
+  G4HCofThisEvent* HCE = anEvent->GetHCofThisEvent();
 
-  G4cout << "The total energy deposited in this event is: " << totEdep/keV << " keV " << G4endl;
- }
-}
+  if (!HCE)
+  {
+    G4cout
+    << "\n------------------------------------------"
+    << " \n Inside if(!HCE) " 
+    << "\n------------------------------------------" << G4endl;
+    return;
+  }
+
+  G4THitsMap<G4double>* evtMap = 
+    static_cast<G4THitsMap<G4double>*>(HCE->GetHC(fshape1ID));
+
+
+G4cout
+    << "\n------------------------------------------"
+    << " \n Just above for-loop " 
+    << "\n------------------------------------------" << G4endl;
+
+ std::map<G4int,G4double*>::iterator itr; 
+  for (itr = evtMap->GetMap()->begin(); itr != evtMap->GetMap()->end(); itr++) 
+  {
+    G4cout
+    << "\n------------------------------------------"
+    << " \n In for-loop " 
+    << "\n------------------------------------------" << G4endl;
+
+    G4double edep = *(itr->second);
+
+    //Sum the energy deposited in all crystals, irrespectively of threshold.
+    totEdep += edep;
+  }
+  
+  analysisManager->FillNtupleDColumn(0, totEdep/MeV);
+  analysisManager->AddNtupleRow(); 
+  
+}  
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
