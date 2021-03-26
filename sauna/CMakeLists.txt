@@ -53,6 +53,7 @@ set(sauna_SCRIPTS
   vis.mac
   scoring.mac
   draw.mac
+  big.mac
   )
 
 foreach(_script ${sauna_SCRIPTS})

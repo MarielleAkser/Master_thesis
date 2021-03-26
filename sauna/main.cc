@@ -69,8 +69,6 @@ int main(int argc,char** argv)
   // Detector construction
   runManager->SetUserInitialization(new saunaDetectorConstruction());
 
-  // Physics list
-  // runManager->SetUserInitialization(new saunaPhysicsList());
 
   G4VModularPhysicsList* physicsList = new FTFP_BERT;
   physicsList->SetVerboseLevel(1);

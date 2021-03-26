@@ -29,37 +29,38 @@
 
 #include "saunaPrimaryGeneratorAction.hh"
 
-#include "G4LogicalVolumeStore.hh"
-#include "G4LogicalVolume.hh"
-#include "G4Box.hh"
-#include "G4RunManager.hh"
+// #include "G4LogicalVolumeStore.hh"
+// #include "G4LogicalVolume.hh"
+// #include "G4Box.hh"
+// #include "G4RunManager.hh"
 
 
-#include "G4GeneralParticleSource.hh"
-#include "G4ParticleTable.hh"
-#include "G4SystemOfUnits.hh"
-#include "G4Event.hh"
+// #include "G4GeneralParticleSource.hh"
+// #include "G4ParticleTable.hh"
+// #include "G4SystemOfUnits.hh"
+// #include "G4Event.hh"
 
-#include "G4ParticleDefinition.hh"
+// #include "G4ParticleDefinition.hh"
 
-#include "Randomize.hh"
+// #include "Randomize.hh"
 
 using namespace std;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-saunaPrimaryGeneratorAction::saunaPrimaryGeneratorAction()
+saunaPrimaryGeneratorAction::saunaPrimaryGeneratorAction() : 
+  G4VUserPrimaryGeneratorAction()
 {
   fGPS = new G4GeneralParticleSource();
 
-  G4ParticleDefinition* particle;
-  particle = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
+  // G4ParticleDefinition* particle;
+  // particle = G4ParticleTable::GetParticleTable()->FindParticle("gamma");
   
-  fGPS->SetParticleDefinition(particle);
+  // fGPS->SetParticleDefinition(particle);
   
-  fGPS->GetCurrentSource()->GetEneDist()->SetMonoEnergy(662*keV);
-  fGPS->GetCurrentSource()->GetAngDist()->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
-  fGPS->GetCurrentSource()->GetPosDist()->SetCentreCoords(G4ThreeVector(0,0,0));
+  // fGPS->GetCurrentSource()->GetEneDist()->SetMonoEnergy(662*keV);
+  // fGPS->GetCurrentSource()->GetAngDist()->SetParticleMomentumDirection(G4ThreeVector(1.,0.,0.));
+  // fGPS->GetCurrentSource()->GetPosDist()->SetCentreCoords(G4ThreeVector(0,0,0));
 
 }
 

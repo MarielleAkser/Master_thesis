@@ -158,6 +158,36 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
 
 
   // ------------------------------------------------------------------
+  // Lead-shield 
+  // ------------------------------------------------------------------
+ 
+  // G4Material* LeadMat = nist->FindOrBuildMaterial("G4_Pb");
+        
+  // // Cylinder section shape       
+  // G4double ShieldLead_rmin =  5.08*cm, ShieldLead_rmax = 10.08*cm;
+  // G4double ShieldLead_hz = (12.7/2)*cm;
+  // G4double ShieldLead_phimin = 0.*deg, ShieldLead_phimax = 360.*deg;
+  
+  // G4Tubs* solidShieldLead =    
+  //   new G4Tubs("ShieldLead", 
+  //   ShieldLead_rmin, ShieldLead_rmax, ShieldLead_hz, ShieldLead_phimin, ShieldLead_phimax);
+
+  // G4LogicalVolume* logicShieldLead =                         
+  //   new G4LogicalVolume(solidShieldLead,         //its solid
+  //                       LeadMat,          //its material
+  //                       "ShieldLead");           //its name
+
+
+  // new G4PVPlacement(rotationMatrix,          //rotation 90deg in x
+  //                   pos1,                    //at position
+  //                   logicShieldLead,             //its logical volume
+  //                   "ShieldLead",                //its name
+  //                   logicWorld,                //its mother volume
+  //                   false,                   //no boolean operation
+  //                   0,                       //copy number
+  //                   checkOverlaps);          //overlaps checking
+
+  // ------------------------------------------------------------------
   // Shape 2 = beta detector (one side of NaI)
   // ------------------------------------------------------------------
   
@@ -235,11 +265,12 @@ void saunaDetectorConstruction::ConstructSDandField()
   G4VPrimitiveScorer* primitiv1 = new G4PSEnergyDeposit("Edep");
 
   // Filter to only read gamma-rays:
-  G4SDParticleFilter* filter =
-    new G4SDParticleFilter("gammaFilter");
-  filter->add("gamma");
+  // G4SDParticleFilter* filter =
+  //   new G4SDParticleFilter("gammaFilter");
+  // filter->add("gamma");
 
-  primitiv1->SetFilter(filter);
+  // primitiv1->SetFilter(filter);
+  
   scorerShape1->RegisterPrimitive(primitiv1);
 
   SetSensitiveDetector("Shape1",scorerShape1);

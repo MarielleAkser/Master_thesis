@@ -1,0 +1,25 @@
+# Macro file for example sauna
+# 
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute big.mac
+#
+# Change the default number of workers (in multi-threading mode) 
+#/run/numberOfThreads 4
+#
+# Initialize kernel
+/run/initialize
+#
+/vis/disable
+/control/verbose 2
+/run/verbose 2
+/event/verbose 0
+/tracking/verbose 1
+# 
+# gamma 662 keV from (0,0,0) and isotropic angle distribution
+#
+/gps/particle gamma
+/gps/ene/mono 662 keV
+/gps/pos/centre 0. 0. 0. cm
+/gps/ang/type iso
+/run/beamOn 100000
+/vis/enable

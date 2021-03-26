@@ -81,10 +81,6 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
 
   if (!HCE)
   {
-    G4cout
-    << "\n------------------------------------------"
-    << " \n Inside if(!HCE) " 
-    << "\n------------------------------------------" << G4endl;
     return;
   }
 
@@ -92,28 +88,20 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
     static_cast<G4THitsMap<G4double>*>(HCE->GetHC(fshape1ID));
 
 
-G4cout
-    << "\n------------------------------------------"
-    << " \n Just above for-loop " 
-    << "\n------------------------------------------" << G4endl;
-
  std::map<G4int,G4double*>::iterator itr; 
   for (itr = evtMap->GetMap()->begin(); itr != evtMap->GetMap()->end(); itr++) 
   {
-    G4cout
-    << "\n------------------------------------------"
-    << " \n In for-loop " 
-    << "\n------------------------------------------" << G4endl;
-
     G4double edep = *(itr->second);
 
     //Sum the energy deposited in all crystals, irrespectively of threshold.
     totEdep += edep;
   }
-  
-  analysisManager->FillNtupleDColumn(0, totEdep/MeV);
-  analysisManager->AddNtupleRow(); 
-  
+
+  if (totEdep > 0)
+  {
+    analysisManager->FillNtupleDColumn(0, totEdep);
+    analysisManager->AddNtupleRow(); 
+  }
 }  
 
 

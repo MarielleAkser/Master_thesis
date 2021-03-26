@@ -1,19 +1,16 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-# The first 3 rows in the file is not included. 
-eDep_file = np.genfromtxt('eDep.csv', delimiter=',')
+eDep_file_t0 = np.genfromtxt('Edep_nt_NaI_t0.csv', delimiter=',')
+eDep_file_t1 = np.genfromtxt('Edep_nt_NaI_t1.csv', delimiter=',')
 
 eDep = []
-for i in range(len( eDep_file )):
-    if eDep_file[i][3] != 0:
-        eDep.append( eDep_file[i][3] *1000 )
+for i in range(len( eDep_file_t0 )):
+        eDep.append( eDep_file_t0[i] )
+
+print( eDep )
+for i in range(len( eDep_file_t1 )):
+        eDep.append( eDep_file_t1[i] )
 
 
-plt.hist(eDep, bins=250)
-plt.title("Histogram over the energy deposit \n in the boxMesh")
-plt.xlabel("Energy deposit [keV]")
-plt.ylabel("Counts")
-plt.ylim(0,25)
-plt.savefig("eDep_hist_MeshBox.jpg")
-plt.show()
+print( sum(eDep) )

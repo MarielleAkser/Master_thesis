@@ -37,7 +37,7 @@
 
 class G4GeneralParticleSource;
 class G4Event;
-class G4Box;
+// class G4Box;
 
 /// The primary generator action class 
 
