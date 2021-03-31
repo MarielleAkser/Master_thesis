@@ -130,7 +130,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4ThreeVector pos1 = G4ThreeVector(0., 0., 0.);
         
   // Cylinder section shape       
-  G4double shape1_rmin =  5.07*cm, shape1_rmax = 5.08*cm;
+  G4double shape1_rmin =  0.0*cm, shape1_rmax = 5.08*cm;
   G4double shape1_hz = (12.7/2)*cm;
   G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
   

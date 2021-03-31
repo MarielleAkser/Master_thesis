@@ -12,5 +12,5 @@ print( eDep )
 for i in range(len( eDep_file_t1 )):
         eDep.append( eDep_file_t1[i] )
 
-
-print( sum(eDep) )
+plt.hist(eDep, bins=50)
+plt.show()

@@ -97,11 +97,9 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
     totEdep += edep;
   }
 
-  if (totEdep > 0)
-  {
-    analysisManager->FillNtupleDColumn(0, totEdep);
-    analysisManager->AddNtupleRow(); 
-  }
+  analysisManager->FillNtupleDColumn(0, totEdep);
+  analysisManager->AddNtupleRow(); 
+  
 }  
 
 
