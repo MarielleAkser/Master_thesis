@@ -99,17 +99,18 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
 
 
  std::map<G4int,G4double*>::iterator itr; 
+
   for (itr = evtMap_NaI->GetMap()->begin(); itr != evtMap_NaI->GetMap()->end(); itr++) 
   {
     G4double edep_NaI = *(itr->second);
-    //Sum the energy deposited in all crystals, irrespectively of threshold.
+    //Sum the energy deposited
     totEdep_NaI += edep_NaI;
   }
 
   for (itr = evtMap_Beta->GetMap()->begin(); itr != evtMap_Beta->GetMap()->end(); itr++) 
   {
     G4double edep_Beta = *(itr->second);
-    //Sum the energy deposited in all crystals, irrespectively of threshold.
+    //Sum the energy deposited
     totEdep_Beta += edep_Beta;
   }
 

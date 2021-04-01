@@ -56,8 +56,6 @@
 
 #include "G4SDParticleWithEnergyFilter.hh"
 
-// #include "G4VPrimitiveSensitivity.hh"
-
 #include "G4VPrimitiveScorer.hh"
 #include "G4PSEnergyDeposit.hh"
 #include "G4PSTrackLength.hh"
@@ -272,13 +270,12 @@ void saunaDetectorConstruction::ConstructSDandField()
 
   G4VPrimitiveScorer* primitiv2 = new G4PSEnergyDeposit("Edep_Beta");
 
-
   // Filter to only read gamma-rays:
-  // G4SDParticleFilter* filter =
+  // G4SDParticleFilter* gammafilter =
   //   new G4SDParticleFilter("gammaFilter");
-  // filter->add("gamma");
+  // gammafilter->add("gamma");
 
-  // primitiv1->SetFilter(filter);
+  // primitiv1->SetFilter(gammafilter);
   
   scorerShape1->RegisterPrimitive(primitiv1);
   scorerShape2->RegisterPrimitive(primitiv2);
