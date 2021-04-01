@@ -81,6 +81,7 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
 
   //Store the total energy in a variable
   G4double totEdep_NaI = 0.;
+  G4double totEdep_Beta = 0.;
   
   //Hits collections
   G4HCofThisEvent* HCE = anEvent->GetHCofThisEvent();
@@ -93,17 +94,27 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
   G4THitsMap<G4double>* evtMap_NaI = 
     static_cast<G4THitsMap<G4double>*>(HCE->GetHC(fshape1ID));
 
+  G4THitsMap<G4double>* evtMap_Beta = 
+    static_cast<G4THitsMap<G4double>*>(HCE->GetHC(fshape2ID));
+
 
  std::map<G4int,G4double*>::iterator itr; 
   for (itr = evtMap_NaI->GetMap()->begin(); itr != evtMap_NaI->GetMap()->end(); itr++) 
   {
     G4double edep_NaI = *(itr->second);
-
     //Sum the energy deposited in all crystals, irrespectively of threshold.
     totEdep_NaI += edep_NaI;
   }
 
+  for (itr = evtMap_Beta->GetMap()->begin(); itr != evtMap_Beta->GetMap()->end(); itr++) 
+  {
+    G4double edep_Beta = *(itr->second);
+    //Sum the energy deposited in all crystals, irrespectively of threshold.
+    totEdep_Beta += edep_Beta;
+  }
+
   analysisManager->FillNtupleDColumn(0, totEdep_NaI);
+  analysisManager->FillNtupleDColumn(1, totEdep_Beta);
   analysisManager->AddNtupleRow(); 
   
 }  

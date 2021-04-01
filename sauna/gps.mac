@@ -17,9 +17,8 @@
 # 
 /gps/source/multiplevertex true
 #
-# gamma 662 keV from (0,0,0) and isotropic angle distribution
 #
-#/gps/source/add 
+# gamma 662 keV from (0,0,0) and isotropic angle distribution
 #
 /gps/particle gamma
 /gps/ene/mono 662 keV
@@ -36,4 +35,4 @@
 /gps/ang/type iso
 #
 /gps/source/list
-/run/beamOn 2
+/run/beamOn 10
