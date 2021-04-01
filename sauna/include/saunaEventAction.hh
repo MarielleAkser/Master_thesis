@@ -48,6 +48,7 @@ class saunaEventAction : public G4UserEventAction
   private:
   // Numerical IDs for hit collections (-1 means unknown yet)
   G4int fshape1ID { -1 };
+  G4int fshape2ID { -1 };
 
 
 };

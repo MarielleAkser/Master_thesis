@@ -13,11 +13,27 @@
 /run/verbose 2
 /event/verbose 0
 /tracking/verbose 1
+#
 # 
+/gps/source/multiplevertex true
+#
 # gamma 662 keV from (0,0,0) and isotropic angle distribution
+#
+#/gps/source/add 
 #
 /gps/particle gamma
 /gps/ene/mono 662 keV
 /gps/pos/centre 0. 0. 0. cm
 /gps/ang/type iso
-/run/beamOn 100
+#
+# electron from (0,0,0) and isotropic angle distribution
+#
+/gps/source/add 1
+#
+/gps/particle e-
+/gps/ene/mono 300 keV
+/gps/pos/centre 0. 0. 0. cm
+/gps/ang/type iso
+#
+/gps/source/list
+/run/beamOn 2

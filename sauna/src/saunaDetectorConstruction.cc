@@ -130,7 +130,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4ThreeVector pos1 = G4ThreeVector(0., 0., 0.);
         
   // Cylinder section shape       
-  G4double shape1_rmin =  0.0*cm, shape1_rmax = 5.08*cm;
+  G4double shape1_rmin =  0.0*cm, shape1_rmax = (10.16/2)*cm;
   G4double shape1_hz = (12.7/2)*cm;
   G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
   
@@ -188,41 +188,39 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   //                   checkOverlaps);          //overlaps checking
 
   // ------------------------------------------------------------------
-  // Shape 2 = beta detector (one side of NaI)
+  // Shape 2 = beta detector 
   // ------------------------------------------------------------------
   
   // Cylinder shape       
-  // G4double shape2_rmin = 6.35*mm, shape2_rmax = (35/2)*mm;
-  // G4double shape2_hz = (50.8/2)*mm;
-  // G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
+  G4double shape2_rmin = 0.0*mm, shape2_rmax = 6.35*mm;
+  G4double shape2_hz = (50.8/2)*mm;
+  G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
   
-  // G4Tubs* solidShape2 =    
-  //   new G4Tubs("Shape2", 
-  //   shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
+  G4Tubs* solidShape2 =    
+    new G4Tubs("Shape2", 
+    shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
 
-  // // The material and position
-  // G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_BONE_COMPACT_ICRU");
-  // G4ThreeVector pos2 = G4ThreeVector(0., 0., (shape1_rmin)); 
+  // The material and position
+  G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_ANTHRACENE");
+  G4ThreeVector pos2 = G4ThreeVector(0., 0., (shape1_rmin)); 
 
   
-  // G4LogicalVolume* logicShape2 =                         
-  //   new G4LogicalVolume(solidShape2,         //its solid
-  //                       shape2_mat,          //its material
-  //                       "Shape2");           //its name
+  G4LogicalVolume* logicShape2 =                         
+    new G4LogicalVolume(solidShape2,         //its solid
+                        shape2_mat,          //its material
+                        "Shape2");           //its name
                
-  // new G4PVPlacement(0,                       //no rotation
-  //                   pos2,                    //at position
-  //                   logicShape2,             //its logical volume
-  //                   "Shape2",                //its name
-  //                   logicWorld,                //its mother  volume
-  //                   false,                   //no boolean operation
-  //                   0,                       //copy number
-  //                   checkOverlaps);          //overlaps checking
-  
-  
+  new G4PVPlacement(0,                       //no rotation
+                    pos2,                    //at position
+                    logicShape2,             //its logical volume
+                    "Shape2",                //its name
+                    logicWorld,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
   
   // ------------------------------------------------------------------
-  // Shape 3 = beta detector (the other side of NaI)
+  // Shape 3 = beta detector 
   // ------------------------------------------------------------------
   
   // Cylinder shape, with the same dimentions as shape2    
@@ -259,10 +257,21 @@ void saunaDetectorConstruction::ConstructSDandField()
  {
    G4SDManager::GetSDMpointer()->SetVerboseLevel(1);
 
-  G4MultiFunctionalDetector* scorerShape1 = new G4MultiFunctionalDetector("shape1_det");
+  // Shape1 - NaI detector becomes a MultiFunctionalDetector
+  G4MultiFunctionalDetector* scorerShape1 = 
+    new G4MultiFunctionalDetector("shape1_det");
   G4SDManager::GetSDMpointer()->AddNewDetector(scorerShape1);
 
-  G4VPrimitiveScorer* primitiv1 = new G4PSEnergyDeposit("Edep");
+  G4VPrimitiveScorer* primitiv1 = new G4PSEnergyDeposit("Edep_NaI");
+
+
+  // Shape2 - Beta-detector becomes a MultiFunctionalDetector
+  G4MultiFunctionalDetector* scorerShape2 = 
+    new G4MultiFunctionalDetector("shape2_det");
+  G4SDManager::GetSDMpointer()->AddNewDetector(scorerShape2);
+
+  G4VPrimitiveScorer* primitiv2 = new G4PSEnergyDeposit("Edep_Beta");
+
 
   // Filter to only read gamma-rays:
   // G4SDParticleFilter* filter =
@@ -272,8 +281,10 @@ void saunaDetectorConstruction::ConstructSDandField()
   // primitiv1->SetFilter(filter);
   
   scorerShape1->RegisterPrimitive(primitiv1);
+  scorerShape2->RegisterPrimitive(primitiv2);
 
   SetSensitiveDetector("Shape1",scorerShape1);
+  SetSensitiveDetector("Shape2",scorerShape2);
 
  }
 
