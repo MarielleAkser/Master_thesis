@@ -18,10 +18,9 @@ for rad in eDep_file_t1:
                 a_row.append(tal)
         eDep.append(a_row)
 
-m = np.array(eDep)
+ej_c = np.array(eDep)
 
 coincidence = []
-
 for rad in eDep:
         for i in range(len(rad)):
                 if (rad[i] != 0 and rad[i+1] != 0):
@@ -32,14 +31,11 @@ print(coincidence)
 c = np.array(coincidence)
 
 plt.hist2d(c[:,1], c[:,0], bins=50, density=False, cmap="Greys")
-plt.ylabel(r'$E_\gamma$')
-plt.xlabel(r'$E_\beta$')
+plt.ylabel(r'$E_\gamma$' "  [MeV]")
+plt.xlabel(r'$E_\beta$' "  [MeV]")
+plt.title(r'$\beta-\gamma$'" coincidence spectra for "r'$^{137}Cs$')
+plt.xlim(0, 0.7)
+plt.ylim(0, 0.7)
 plt.colorbar()
+plt.savefig("Coin_beta_gamma_Cs137.png")
 plt.show()
-
-# 2D histogrsm plot
-# plt.hist2d(m[:,0], m[:,1], bins=50, density=False, cmap="Reds")
-# plt.xlabel("NaI detector")
-# plt.ylabel("Beta detactor")
-# plt.colorbar()
-# plt.show()
