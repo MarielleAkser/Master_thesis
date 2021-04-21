@@ -60,7 +60,9 @@ void saunaRunAction::BeginOfRunAction(const G4Run*)
   //Create a column ntuple
   analysisManager->CreateNtuple("NaI_Beta", "EnergyDeposit");
   // 1) total energy released in the crystals (double), MeV
+  analysisManager->CreateNtupleSColumn("Particle_NaI");
   analysisManager->CreateNtupleDColumn("NaI");
+  analysisManager->CreateNtupleSColumn("Particle_Beta");
   analysisManager->CreateNtupleDColumn("Beta");
   //ok, done
   analysisManager->FinishNtuple();

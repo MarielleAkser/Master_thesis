@@ -20,32 +20,31 @@
 ################
 # gamma 662 keV from (0,0,0) and isotropic angle distribution
 #
-/gps/particle e-
-/gps/ene/mono 662 keV
-/gps/pos/centre 0. 0. 0. cm
-/gps/ang/type iso
-/run/beamOn 10
+#/gps/particle e-
+#/gps/ene/mono 662 keV
+#/gps/pos/centre 0. 0. 0. cm
+#/gps/ang/type iso
+#/run/beamOn 10
 #
 ##########################
 # MORE THAN ONE PARTICLE #
 ##########################
-/gps/source/multiplevertex true
+#/gps/source/multiplevertex true
 #
 # gamma 662 keV and isotropic angle distribution
 #
-#/gps/particle gamma
-#/gps/ene/mono 662 keV
-#/gps/pos/centre 6.35 0. 0. mm
-#/gps/ang/type iso
+/gps/particle gamma
+/gps/ene/mono 662 keV
+/gps/pos/centre 0. 0. 0. mm
+/gps/ang/type iso
 #
 # electron and isotropic angle distribution
 #
-#/gps/source/add 1
+/gps/source/add 1
 #
-#/gps/particle e-
-#/gps/ene/mono 300 keV
-#/gps/pos/centre 6.35 0. 0. mm
-#/gps/ang/type iso
+/gps/particle e-
+/gps/ene/mono 300 keV
+/gps/pos/centre 0. 0. 0. mm
+/gps/ang/type iso
 #
-#/gps/source/list
-#/run/beamOn 10
+/run/beamOn 10

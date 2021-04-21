@@ -87,17 +87,6 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
      = G4SDManager::GetSDMpointer()->GetCollectionID("shape2_det/Edep_Beta");
   }
 
-
-  // Getting the name of the mother particle
-  G4String parent_name = anEvent->GetPrimaryVertex()->GetPrimary()->GetParticleDefinition()->GetParticleName();
-    
-    G4cout
-    << "\n--------------------EventAction-----------------------"
-    << " \n The parent name is: " << parent_name << " \n " << G4endl;
-
-
-
-
   //Store the total energy in a variable
   G4double totEdep_NaI = 0.;
   G4double totEdep_Beta = 0.;
@@ -124,6 +113,23 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
     G4double edep_NaI = *(itr->second);
     //Sum the energy deposited
     totEdep_NaI += edep_NaI;
+
+    bool flag = true;
+    if (flag)
+    {
+      // Getting the name of the mother particle
+    G4String parent_name = anEvent->GetPrimaryVertex()->GetPrimary()->GetParticleDefinition()->GetParticleName();
+      
+      G4cout
+      << "\n--------------------EventAction-----------------------"
+      << "\n------------------------NaI---------------------------"
+      << " \n The parent name is: " << parent_name << " \n " << G4endl;
+
+      analysisManager->FillNtupleSColumn(0, parent_name);
+
+    flag = false;
+    }
+
   }
 
   for (itr = evtMap_Beta->GetMap()->begin(); itr != evtMap_Beta->GetMap()->end(); itr++) 
@@ -131,11 +137,28 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
     G4double edep_Beta = *(itr->second);
     //Sum the energy deposited
     totEdep_Beta += edep_Beta;
+
+    bool flag = true;
+    if (flag)
+    {
+      // Getting the name of the mother particle
+      G4String parent_name = anEvent->GetPrimaryVertex()->GetPrimary()->GetParticleDefinition()->GetParticleName();
+      
+      G4cout
+      << "\n--------------------EventAction-----------------------"
+      << "\n-----------------------Beta---------------------------"
+      << " \n The parent name is: " << parent_name << " \n " << G4endl;
+
+      analysisManager->FillNtupleSColumn(2, parent_name);
+
+    flag = false;
+    }
+
   }
 
   // Filling the files
-  analysisManager->FillNtupleDColumn(0, totEdep_NaI);
-  analysisManager->FillNtupleDColumn(1, totEdep_Beta);
+  analysisManager->FillNtupleDColumn(1, totEdep_NaI);
+  analysisManager->FillNtupleDColumn(3, totEdep_Beta);
   analysisManager->AddNtupleRow(); 
   
 }  
