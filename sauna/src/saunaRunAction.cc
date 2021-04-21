@@ -44,7 +44,7 @@ saunaRunAction::~saunaRunAction()
 }
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaRunAction::BeginOfRunAction(const G4Run* run)
+void saunaRunAction::BeginOfRunAction(const G4Run*)
 {
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
 

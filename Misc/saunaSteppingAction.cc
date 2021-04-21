@@ -23,32 +23,64 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
+/// \file saunaSteppingAction.cc
+/// \brief Implementation of the SteppingAction class
 //
-/// \file B3bRunAction.hh
-/// \brief Definition of the B3bRunAction class
+//
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef B3bRunAction_h
-#define B3bRunAction_h 1
+#include "saunaSteppingAction.hh"
+#include "saunaRunAction.hh"
+#include "saunaEventAction.hh"
 
-#include "G4UserRunAction.hh"
-#include "globals.hh"
+#include "G4RunManager.hh"
+#include "G4SteppingManager.hh"
+#include "G4VProcess.hh"
+#include "G4UnitsTable.hh"
 
-class G4Run;
+#include "G4Step.hh"
+#include "G4Track.hh"
 
-/// Run action class
+#include "G4ParticleDefinition.hh"
 
-class B3bRunAction : public G4UserRunAction
-{
-  public:
-    B3bRunAction();
-    virtual ~B3bRunAction();
-    
-    virtual G4Run* GenerateRun();
-    virtual void BeginOfRunAction(const G4Run*);
-    virtual void   EndOfRunAction(const G4Run*);
-};
+#include "g4csv.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#endif
+saunaSteppingAction::saunaSteppingAction(saunaEventAction* anEvent)
+  :G4UserSteppingAction(), fEventAction(anEvent)
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+saunaSteppingAction::~saunaSteppingAction()
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void saunaSteppingAction::UserSteppingAction(const G4Step* aStep)
+{
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+   
+  // step length of primary particle
+  // G4int parent_ID = aStep->GetTrack()->GetParentID();
+
+  //   if (parent_ID == 0)
+  //   {
+  //     G4cout
+  //   << "\n--------------------SteppingAction-----------------------"
+  //   << " \n The parentID is: " << parent_ID << " \n " << G4endl;
+
+  //     G4String name_parent = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
+
+  //     G4cout
+  //   << " \n The parent name is: " << name_parent << " \n " << G4endl;
+
+  //   }
+
+
+}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 

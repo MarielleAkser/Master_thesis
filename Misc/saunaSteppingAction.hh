@@ -23,33 +23,35 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
+/// \file electromagnetic/TestEm1/include/SteppingAction.hh
+/// \brief Definition of the SteppingAction class
 //
-/// \file B3aActionInitialization.hh
-/// \brief Definition of the B3aActionInitialization class
+//
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#ifndef B3aActionInitialization_h
-#define B3aActionInitialization_h 1
+#ifndef saunaSteppingAction_h
+#define saunaSteppingAction_h 1
 
-#include "G4VUserActionInitialization.hh"
+#include "G4UserSteppingAction.hh"
 
-/// Action initialization class.
-///
+
+class saunaEventAction;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-class B3aActionInitialization : public G4VUserActionInitialization
+class saunaSteppingAction : public G4UserSteppingAction
 {
   public:
-    B3aActionInitialization();
-    virtual ~B3aActionInitialization();
+    saunaSteppingAction(saunaEventAction* anEvent);
+    ~saunaSteppingAction() override;
 
-    virtual void BuildForMaster() const;
-    virtual void Build() const;
+    void UserSteppingAction(const G4Step*);
 
+  private:
+    saunaEventAction*  fEventAction;
 };
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 #endif
-
-    

@@ -5,7 +5,6 @@ eDep_file_t0 = np.genfromtxt('Edep_nt_NaI_Beta_t0.csv', delimiter=',')
 eDep_file_t1 = np.genfromtxt('Edep_nt_NaI_Beta_t1.csv', delimiter=',')
 
 eDep = []
-
 for rad in eDep_file_t0:
         a_row = []
         for tal in rad:
@@ -27,7 +26,6 @@ for rad in eDep:
                         coincidence.append(rad)
                 break
 
-print(coincidence)
 c = np.array(coincidence)
 
 plt.hist2d(c[:,1], c[:,0], bins=50, density=False, cmap="Greys")

@@ -55,6 +55,7 @@ set(sauna_SCRIPTS
   draw.mac
   big.mac
   cesium.mac
+  test.mac
   )
 
 foreach(_script ${sauna_SCRIPTS})

@@ -44,6 +44,14 @@
 #include "g4csv.hh"
 #include "G4GenericAnalysisManager.hh"
 
+#include "G4Track.hh"
+#include "G4ParticleDefinition.hh"
+#include "G4DynamicParticle.hh"
+#include "G4Step.hh"
+
+#include "G4PrimaryVertex.hh"
+#include "G4ParticleDefinition.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaEventAction::saunaEventAction() :
@@ -78,6 +86,17 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
    fshape2ID 
      = G4SDManager::GetSDMpointer()->GetCollectionID("shape2_det/Edep_Beta");
   }
+
+
+  // Getting the name of the mother particle
+  G4String parent_name = anEvent->GetPrimaryVertex()->GetPrimary()->GetParticleDefinition()->GetParticleName();
+    
+    G4cout
+    << "\n--------------------EventAction-----------------------"
+    << " \n The parent name is: " << parent_name << " \n " << G4endl;
+
+
+
 
   //Store the total energy in a variable
   G4double totEdep_NaI = 0.;
@@ -114,6 +133,7 @@ void saunaEventAction::EndOfEventAction(const G4Event* anEvent)
     totEdep_Beta += edep_Beta;
   }
 
+  // Filling the files
   analysisManager->FillNtupleDColumn(0, totEdep_NaI);
   analysisManager->FillNtupleDColumn(1, totEdep_Beta);
   analysisManager->AddNtupleRow(); 

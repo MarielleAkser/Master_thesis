@@ -9,7 +9,7 @@
 # Initialize kernel
 /run/initialize
 #
-#/vis/disable
+/vis/disable
 /control/verbose 2
 /run/verbose 2
 /event/verbose 0
@@ -24,4 +24,4 @@
 /gps/pos/centre 0. 0. 0. cm
 /gps/ang/type iso
 /run/beamOn 1000
-#/vis/enable
+/vis/enable
