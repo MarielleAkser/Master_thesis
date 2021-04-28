@@ -47,6 +47,7 @@ saunaRunAction::~saunaRunAction()
 void saunaRunAction::BeginOfRunAction(const G4Run*)
 {
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
+  G4RunManager::GetRunManager()->SetNumberOfEventsToBeStored(2);
 
   // Reset all accumulables to their initial values
   G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();

@@ -23,72 +23,84 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file saunaSteppingAction.cc
-/// \brief Implementation of the SteppingAction class
+/// \file saunaTrackingAction.cc
+/// \brief Implementation of the TrackingAction class
 //
 //
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "saunaSteppingAction.hh"
+#include "saunaTrackingAction.hh"
 #include "saunaRunAction.hh"
 #include "saunaEventAction.hh"
 
 #include "G4RunManager.hh"
-#include "G4SteppingManager.hh"
+#include "G4TrackingManager.hh"
 #include "G4VProcess.hh"
 #include "G4UnitsTable.hh"
 
-#include "G4Step.hh"
 #include "G4Track.hh"
+#include "G4Step.hh"
 
 #include "G4ParticleDefinition.hh"
 
 #include "g4csv.hh"
 
+#include "G4VTouchable.hh"
+
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-saunaSteppingAction::saunaSteppingAction(saunaEventAction* anEvent)
-  :G4UserSteppingAction(), fEventAction(anEvent)
+saunaTrackingAction::saunaTrackingAction(saunaEventAction* anEvent)
+  :G4UserTrackingAction(), fEventAction(anEvent)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-saunaSteppingAction::~saunaSteppingAction()
+saunaTrackingAction::~saunaTrackingAction()
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaSteppingAction::UserSteppingAction(const G4Step* aStep)
+void saunaTrackingAction::PreUserTrackingAction(const G4Track* )
+{}
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
+void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
-  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-   
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-  // G4String namn = aStep->GetPreStepPoint()->GetSensitiveDetector();
+  G4double energy_deposit = aTrack->GetStep()->GetTotalEnergyDeposit();
 
-  // G4cout
-  //   << "\n--------------------SteppingAction-----------------------"
-  //   << "\n The parent name is: " << namn 
-  //   << "\n---------------------------------------------------------" << G4endl;
+  if (energy_deposit > 0)
+  {
+    G4int particle_ID = aTrack->GetParentID();
 
+    if (particle_ID == 0)
+    {
+      G4String particle_name = aTrack->GetParticleDefinition()->GetParticleName();
+      G4String eDep_volume = aTrack->GetVolume()->GetName();
 
+      if (eDep_volume == "Shape1")
+      {
+        analysisManager->FillNtupleSColumn(0, particle_name);
+      }
 
-  // primary particle
-  // G4int parent_ID = aStep->GetTrack()->GetParentID();
+      if (eDep_volume == "Shape2")
+      {
+        analysisManager->FillNtupleSColumn(2, particle_name);
+      }
 
-  //   if (parent_ID == 0)
-  //   {
-  //     // Name of the mother particle:
-  //     G4String parent_name = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
-      
-  //     G4cout
-  //     << "\n--------------------SteppingAction-----------------------"
-  //     << "\n The parent name is: " << parent_name 
-  //     << "\n---------------------------------------------------------" << G4endl;
-  //   }
+      // G4cout
+      // << "\n--------------------PostTrackingAction-----------------------"
+      // << "\n eDep in volume: " << eDep_volume
+      // << "\n with particle ID: " <<  particle_ID
+      // << "\n The particle name is: " << particle_name
+      // << "\n---------------------------------------------------------" << G4endl;
+
+    }
+
+  }
 
 
 }
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-

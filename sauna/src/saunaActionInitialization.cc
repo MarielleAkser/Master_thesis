@@ -32,6 +32,7 @@
 
 #include "saunaEventAction.hh"
 #include "saunaRunAction.hh"
+#include "saunaTrackingAction.hh"
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -55,6 +56,8 @@ void saunaActionInitialization::Build() const
   
   saunaEventAction* theEventAction = new saunaEventAction;
   SetUserAction(theEventAction);
+
+  SetUserAction(new saunaTrackingAction(theEventAction));
 }
 
 void saunaActionInitialization::BuildForMaster() const
