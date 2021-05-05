@@ -23,72 +23,37 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file saunaSteppingAction.cc
-/// \brief Implementation of the SteppingAction class
+/// \file electromagnetic/TestEm1/include/SteppingAction.hh
+/// \brief Definition of the SteppingAction class
 //
 //
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "saunaSteppingAction.hh"
-#include "saunaRunAction.hh"
-#include "saunaEventAction.hh"
+#ifndef saunaSteppingAction_h
+#define saunaSteppingAction_h 1
 
-#include "G4RunManager.hh"
-#include "G4SteppingManager.hh"
-#include "G4VProcess.hh"
-#include "G4UnitsTable.hh"
+#include "G4UserSteppingAction.hh"
+#include "globals.hh"
 
-#include "G4Step.hh"
-#include "G4Track.hh"
 
-#include "G4ParticleDefinition.hh"
-
-#include "g4csv.hh"
+class saunaEventAction;
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-saunaSteppingAction::saunaSteppingAction(saunaEventAction* anEvent)
-  :G4UserSteppingAction(), fEventAction(anEvent)
-{}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-saunaSteppingAction::~saunaSteppingAction()
-{}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void saunaSteppingAction::UserSteppingAction(const G4Step* aStep)
+class saunaSteppingAction : public G4UserSteppingAction
 {
-  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-   
+  public:
+    saunaSteppingAction(saunaEventAction* anEvent);
+    ~saunaSteppingAction() override;
 
-  // G4String namn = aStep->GetPreStepPoint()->GetSensitiveDetector();
+    void UserSteppingAction(const G4Step*);
 
-  // G4cout
-  //   << "\n--------------------SteppingAction-----------------------"
-  //   << "\n The parent name is: " << namn 
-  //   << "\n---------------------------------------------------------" << G4endl;
-
-
-
-  // primary particle
-  // G4int parent_ID = aStep->GetTrack()->GetParentID();
-
-  //   if (parent_ID == 0)
-  //   {
-  //     // Name of the mother particle:
-  //     G4String parent_name = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
-      
-  //     G4cout
-  //     << "\n--------------------SteppingAction-----------------------"
-  //     << "\n The parent name is: " << parent_name 
-  //     << "\n---------------------------------------------------------" << G4endl;
-  //   }
-
-
-}
+  private:
+    saunaEventAction*  fEventAction;
+    // G4int counter;
+};
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
+#endif

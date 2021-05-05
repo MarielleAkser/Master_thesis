@@ -47,29 +47,29 @@ saunaRunAction::~saunaRunAction()
 void saunaRunAction::BeginOfRunAction(const G4Run*)
 {
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
-  G4RunManager::GetRunManager()->SetNumberOfEventsToBeStored(2);
+  // G4RunManager::GetRunManager()->SetNumberOfEventsToBeStored(2);
 
-  // Reset all accumulables to their initial values
-  G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
-  accumulableManager->Reset();
+  // // Reset all accumulables to their initial values
+  // G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
+  // accumulableManager->Reset();
 
-  // Create/get analysis manager
+  // // Create/get analysis manager
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->SetVerboseLevel(1);
   analysisManager->SetFirstNtupleId(1);
 
   //Create a column ntuple
-  analysisManager->CreateNtuple("NaI_Beta", "EnergyDeposit");
+  analysisManager->CreateNtuple("detector", "totEdep");
   // 1) total energy released in the crystals (double), MeV
-  analysisManager->CreateNtupleSColumn("Particle_NaI");
-  analysisManager->CreateNtupleDColumn("NaI");
-  analysisManager->CreateNtupleSColumn("Particle_Beta");
-  analysisManager->CreateNtupleDColumn("Beta");
-  //ok, done
+  analysisManager->CreateNtupleSColumn("Particle_in_NaI");
+  analysisManager->CreateNtupleDColumn("eDep_in_NaI");
+  analysisManager->CreateNtupleSColumn("Particle_in_Beta");
+  analysisManager->CreateNtupleDColumn("eDep_in_Beta");
+  // //ok, done
   analysisManager->FinishNtuple();
 
   // Create a new output file
-  analysisManager->OpenFile("Edep");
+  analysisManager->OpenFile("totEdep");
 
 }
 

@@ -45,10 +45,32 @@ class saunaEventAction : public G4UserEventAction
     virtual void BeginOfEventAction(const G4Event* anEvent) override;
     virtual void EndOfEventAction(const G4Event* anEvent) override;
 
+    void Add_eDep(G4double eDep, G4int trackID )
+    {
+      if (trackID == 1)
+      {
+        fTotalEnergyDeposit_electron += eDep;
+      }
+
+      if (trackID > 1)
+      {
+        fTotalEnergyDeposit_gamma += eDep;
+      }
+    }
+
+    G4double GetEnergyDeposit()
+    {
+      return fTotalEnergyDeposit_electron;
+    }
+
   private:
   // Numerical IDs for hit collections (-1 means unknown yet)
   G4int fshape1ID { -1 };
   G4int fshape2ID { -1 };
+
+  G4double fTotalEnergyDeposit_electron;
+  G4double fTotalEnergyDeposit_gamma;
+  G4int fTrackID;
 
 
 };

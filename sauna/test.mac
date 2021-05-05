@@ -19,20 +19,20 @@
 #
 /gps/source/multiplevertex true
 #
+# electron and isotropic angle distribution
+#
+/gps/particle e-
+/gps/ene/mono 300 keV
+/gps/pos/centre 0 0. 0. mm
+/gps/ang/type iso
+#
+#
+/gps/source/add 1
+#
 # gamma 662 keV and isotropic angle distribution
 #
 /gps/particle gamma
 /gps/ene/mono 662 keV
-/gps/pos/centre 0 0. 0. mm
-/gps/ang/type iso
-#
-# electron and isotropic angle distribution
-#
-/gps/source/add 1
-#/gps/source/intensity 5
-#
-/gps/particle e-
-/gps/ene/mono 300 keV
 /gps/pos/centre 0 0. 0. mm
 /gps/ang/type iso
 #

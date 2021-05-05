@@ -34,7 +34,7 @@
 #define saunaTrackingAction_h 1
 
 #include "G4UserTrackingAction.hh"
-
+#include "globals.hh"
 
 class saunaEventAction;
 
@@ -50,6 +50,7 @@ class saunaTrackingAction : public G4UserTrackingAction
     virtual void PostUserTrackingAction(const G4Track*);
 
   private:
+    G4int counter;
     saunaEventAction*  fEventAction;
 };
 

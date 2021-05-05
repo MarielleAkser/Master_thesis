@@ -23,76 +23,62 @@
 // * acceptance of all terms of the Geant4 Software license.          *
 // ********************************************************************
 //
-/// \file saunaTrackingAction.cc
-/// \brief Implementation of the TrackingAction class
+/// \file saunaSteppingAction.cc
+/// \brief Implementation of the SteppingAction class
 //
 //
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-#include "saunaTrackingAction.hh"
+#include "saunaSteppingAction.hh"
 #include "saunaRunAction.hh"
 #include "saunaEventAction.hh"
 
 #include "G4RunManager.hh"
+#include "G4SteppingManager.hh"
 #include "G4TrackingManager.hh"
 #include "G4VProcess.hh"
 #include "G4UnitsTable.hh"
 
-#include "G4Track.hh"
 #include "G4Step.hh"
-#include "G4StepPoint.hh"
+#include "G4Track.hh"
 
 #include "G4ParticleDefinition.hh"
+#include "G4VSensitiveDetector.hh"
+#include "G4Electron.hh"
 
 #include "g4csv.hh"
 
-#include "G4VTouchable.hh"
-#include "G4Electron.hh"
-#include "G4TrackStatus.hh"
-
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-saunaTrackingAction::saunaTrackingAction(saunaEventAction* anEvent)
-  :G4UserTrackingAction(), fEventAction(anEvent), counter(0)
+saunaSteppingAction::saunaSteppingAction(saunaEventAction* anEvent)
+  :G4UserSteppingAction(), fEventAction(anEvent)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-saunaTrackingAction::~saunaTrackingAction()
+saunaSteppingAction::~saunaSteppingAction()
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaTrackingAction::PreUserTrackingAction(const G4Track* )
-{}
-
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
+void saunaSteppingAction::UserSteppingAction(const G4Step* aStep)
 {
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-  G4int particle_ID = aTrack->GetParentID();
-  G4String particle_name = aTrack->GetParticleDefinition()->GetParticleName();
-  G4double energy_deposit = aTrack->GetStep()->GetTotalEnergyDeposit();
-  
-  G4String eDep_volume = aTrack->GetVolume()->GetName();
+  G4double eDep_step = aStep->GetTotalEnergyDeposit();
 
-  // G4double first_E_kin = aTrack->GetStep()->GetPreStepPoint()->GetKineticEnergy();
-  // G4double last_E_kin = aTrack->GetKineticEnergy();
+  // When gamma i the mother particel the trackID is always == 2
+  // And when the electron is the mother particle the track ID == 1
+  G4int trackID = aStep->GetTrack()->GetTrackID();
+  G4String particle_name = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
 
-  // G4cout
-  // << "\n--------------------PostTrackingAction-----------------------"
-  // << "\n The Energy deposit is: " << energy_deposit
-  // << "\n In volume: " << eDep_volume
-  // << "\n And the particle name is: " << particle_name
-  // // << "\n First kinetic energy: " << first_E_kin
-  // // << "\n Last kinetic energy: " << last_E_kin
-  // << "\n ------------------------------------------------------------ \n" << G4endl;
+  if (eDep_step > 0.)
+  {
+    fEventAction->Add_eDep(eDep_step, trackID);
+  }
 
 
-  // G4TrackVector* secTracks = fpTrackingManager -> GimmeSecondaries();
+  // auto secTracks = aStep->GetSecondaryInCurrentStep();
   // size_t nrSecTracks = 0;
 
   // if(secTracks) 
@@ -105,41 +91,46 @@ void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
   //    }
   // }
 
-
-  if (energy_deposit > 0)
-  {
-    if (particle_ID == 0)
-    {
-      if (eDep_volume == "Shape1")
-      {
-        analysisManager->FillNtupleSColumn(0, particle_name);
-      }
-
-      if (eDep_volume == "Shape2")
-      {
-        analysisManager->FillNtupleSColumn(2, particle_name);
-      }
-
-      G4cout
-      << "\n--------------------PostTrackingAction-----------------------"
-      << "\n eDep in volume: " << eDep_volume
-      << "\n with particle ID: " <<  particle_ID
-      << "\n The particle name is: " << particle_name
-      << "\n---------------------------------------------------------" << G4endl;
-
-    }
-  }
-  
-  // G4TrackVector* secTracks = fpTrackingManager -> GimmeSecondaries();
-  // size_t nrSecTracks;
-
-
   // G4cout
-  //     << "\n--------------------PostTrackingAction-----------------------"
-  //     << "\n eDep in volume: " << eDep_volume
-  //     << "\n The particle name is: " << particle_name
-  //     << "\n secondaries: " << nrSecTracks
+  // << "\n--------- SteppingAction  ------------"
+  // << "\n The particle name is: " << particle_name 
+  // << "\n The trackID: " << trackID 
+  // << "\n with the energy deposit: " << eDep_step
+  // // << "\n and the counter is: " << counter
+  // << "\n---------------------------------------------------------" << G4endl;
+
+
+  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  
+  // primary particle
+  // G4int parent_ID = aStep->GetTrack()->GetParentID();
+
+  //   if (parent_ID == 0)
+  //   {
+  //     // Name of the mother particle:
+  //     G4String parent_name = aStep->GetTrack()->GetParticleDefinition()->GetParticleName();
+  //     G4String namn_det = aStep->GetPreStepPoint()->GetSensitiveDetector()->GetName();
+
+  //     G4cout
+  //     << "\n--------- SteppingAction with parent ID == 0 ------------"
+  //     << "\n The parent name is: " << parent_name 
+  //     << "\n The detector name is: " << namn_det 
   //     << "\n---------------------------------------------------------" << G4endl;
+  //   }
+
+  // if (parent_ID > 0)
+  // {
+  //   G4String namn_det = aStep->GetPreStepPoint()->GetSensitiveDetector()->GetName();
+
+  //     G4cout
+  //     << "\n--------- SteppingAction with parent ID > 0 -------------"
+  //     << "\n The detector name is: " << namn_det 
+  //     << "\n---------------------------------------------------------" << G4endl;
+
+  // }
 
 
 }
+
+//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+
