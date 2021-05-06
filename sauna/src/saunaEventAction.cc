@@ -65,7 +65,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaEventAction::saunaEventAction() :
- G4UserEventAction(), fTotalEnergyDeposit_electron(0.), fTotalEnergyDeposit_gamma(0.)
+ G4UserEventAction(), fTotalEnergyDeposit_Beta(0.), fTotalEnergyDeposit_NaI(0.)
 {;} 
 
 saunaEventAction::~saunaEventAction()
@@ -78,6 +78,24 @@ void saunaEventAction::BeginOfEventAction(const G4Event* )
   fTotalEnergyDeposit_electron = 0.; 
   fTotalEnergyDeposit_gamma = 0.;
 
+  fTotalEnergyDeposit_NaI = 0.;
+  fTotalEnergyDeposit_Beta = 0.;
+
+  // G4cout
+  // << "\n //////////////// Begin Of EventAction ////////////// \n"
+  // << G4endl;
+
+  // G4int nr_primary_vertex = anEvent->GetNumberOfPrimaryVertex();
+  // for (int i=0; i<nr_primary_vertex; i++)
+  // {
+  //   G4cout
+  //   << "\n track ID : " << anEvent->GetPrimaryVertex(0)->GetPrimary(0)->GetTrackID ()
+  //   << G4endl;
+  // }
+  // G4cout
+  // << "\n //////////////// /////////////////// ////////////// \n"
+  // << G4endl;
+
   // Retrieve the collectionID corresponding to hits in the NaI
   // The variable fshape1ID is initialized to -1 in EventAction.hh) 
   //so this block of code is executed only at the end of the first event. 
@@ -86,12 +104,13 @@ void saunaEventAction::BeginOfEventAction(const G4Event* )
    fshape1ID 
      = G4SDManager::GetSDMpointer()->GetCollectionID("shape1_det/Edep_NaI");
   }
-
   if ( fshape2ID == -1 ) 
   {
    fshape2ID 
      = G4SDManager::GetSDMpointer()->GetCollectionID("shape2_det/Edep_Beta");
   }
+
+
 
 }
 
@@ -99,7 +118,7 @@ void saunaEventAction::BeginOfEventAction(const G4Event* )
 
 void saunaEventAction::EndOfEventAction(const G4Event* )
 {   
-  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
   // // Retrieve the collectionID corresponding to hits in the NaI
   // // The variable fshape1ID is initialized to -1 in EventAction.hh) 
@@ -117,10 +136,18 @@ void saunaEventAction::EndOfEventAction(const G4Event* )
   // }
 
   G4cout
-  << "\n---------------------EndOfEvent---------------------- \n"
-  << "total energy deposit of the electron: " << fTotalEnergyDeposit_electron 
-  << "\n and the energy deposit of the gamma: " << fTotalEnergyDeposit_gamma
+  << "\n ---------------------EndOfEvent---------------------- \n"
+   << " The energy deposit in NaI: " << fTotalEnergyDeposit_NaI
+  << " \n and the energy deposit in Beta: " << fTotalEnergyDeposit_Beta
+  << "\n and the parent name in beta: " << fParentName_Beta
+  << "\n ----------------------------------------------------- \n"
   << G4endl;
+
+  // Filling the files
+  analysisManager->FillNtupleDColumn(1, fTotalEnergyDeposit_NaI);
+  analysisManager->FillNtupleDColumn(3, fTotalEnergyDeposit_Beta);
+  analysisManager->AddNtupleRow(); 
+
 
 }  
 
@@ -232,11 +259,7 @@ void saunaEventAction::EndOfEventAction(const G4Event* )
 //   // << "\n-------------------------------------------------- \n" << G4endl;
 //   // }
 
-//   // Filling the files
-//   // analysisManager->FillNtupleDColumn(1, totEdep_NaI);
-//   // analysisManager->FillNtupleDColumn(3, totEdep_Beta);
-//   // analysisManager->AddNtupleRow(); 
-
+  
 
 
 

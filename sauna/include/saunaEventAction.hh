@@ -33,6 +33,7 @@
 #include "G4UserEventAction.hh"
 #include "G4THitsMap.hh"
 #include "globals.hh"
+#include "G4Electron.hh"
 
 /// Event action class
 
@@ -45,22 +46,34 @@ class saunaEventAction : public G4UserEventAction
     virtual void BeginOfEventAction(const G4Event* anEvent) override;
     virtual void EndOfEventAction(const G4Event* anEvent) override;
 
-    void Add_eDep(G4double eDep, G4int trackID )
+    void Add_eDep_Beta( G4double eDep, G4String parent_name )
     {
-      if (trackID == 1)
-      {
-        fTotalEnergyDeposit_electron += eDep;
-      }
+      // When the electron is the mother particle the track ID == 1
+      // When gamma is the mother particel the trackID is == 2
+      // and when the secondary particle is created from the gamma the track ID will always 
+      // be higher than 2.
 
-      if (trackID > 1)
-      {
-        fTotalEnergyDeposit_gamma += eDep;
-      }
+      fTotalEnergyDeposit_Beta += eDep;
+
+      // if (parent_name == "e-")
+      // {
+      //   fParentName_Beta = "e-"; // FUNKAR INTE! 
+      // }
+
+      // if (trackID == 1)
+      // {
+      //   fTotalEnergyDeposit_electron += eDep;
+      // }
+      // if (trackID > 1)
+      // {
+      //   fTotalEnergyDeposit_gamma += eDep;
+  
+      // }
     }
 
-    G4double GetEnergyDeposit()
+    void Add_eDep_NaI( G4double eDep, G4String parent_name )
     {
-      return fTotalEnergyDeposit_electron;
+      fTotalEnergyDeposit_NaI += eDep;
     }
 
   private:
@@ -70,7 +83,15 @@ class saunaEventAction : public G4UserEventAction
 
   G4double fTotalEnergyDeposit_electron;
   G4double fTotalEnergyDeposit_gamma;
-  G4int fTrackID;
+
+  G4double fTotalEnergyDeposit_Beta;
+  G4double fTotalEnergyDeposit_NaI;
+
+  G4String fDetectorName;
+  G4String fParticleName;
+  G4int fTrackId;
+  G4String fParentName_Beta;
+  G4String fParentName_NaI;
 
 
 };

@@ -54,7 +54,7 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaTrackingAction::saunaTrackingAction(saunaEventAction* anEvent)
-  :G4UserTrackingAction(), fEventAction(anEvent), counter(0)
+  :G4UserTrackingAction(), fEventAction(anEvent)
 {}
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -69,15 +69,15 @@ void saunaTrackingAction::PreUserTrackingAction(const G4Track* )
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
+void saunaTrackingAction::PostUserTrackingAction(const G4Track* )
 {
-  G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
+  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-  G4int particle_ID = aTrack->GetParentID();
-  G4String particle_name = aTrack->GetParticleDefinition()->GetParticleName();
-  G4double energy_deposit = aTrack->GetStep()->GetTotalEnergyDeposit();
+  // G4int particle_ID = aTrack->GetParentID();
+  // G4String particle_name = aTrack->GetParticleDefinition()->GetParticleName();
+  // G4double energy_deposit = aTrack->GetStep()->GetTotalEnergyDeposit();
   
-  G4String eDep_volume = aTrack->GetVolume()->GetName();
+  // G4String eDep_volume = aTrack->GetVolume()->GetName();
 
   // G4double first_E_kin = aTrack->GetStep()->GetPreStepPoint()->GetKineticEnergy();
   // G4double last_E_kin = aTrack->GetKineticEnergy();
@@ -106,29 +106,29 @@ void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
   // }
 
 
-  if (energy_deposit > 0)
-  {
-    if (particle_ID == 0)
-    {
-      if (eDep_volume == "Shape1")
-      {
-        analysisManager->FillNtupleSColumn(0, particle_name);
-      }
+  // if (energy_deposit > 0)
+  // {
+  //   if (particle_ID == 0)
+  //   {
+  //     if (eDep_volume == "Shape1")
+  //     {
+  //       analysisManager->FillNtupleSColumn(0, particle_name);
+  //     }
 
-      if (eDep_volume == "Shape2")
-      {
-        analysisManager->FillNtupleSColumn(2, particle_name);
-      }
+  //     if (eDep_volume == "Shape2")
+  //     {
+  //       analysisManager->FillNtupleSColumn(2, particle_name);
+  //     }
 
-      G4cout
-      << "\n--------------------PostTrackingAction-----------------------"
-      << "\n eDep in volume: " << eDep_volume
-      << "\n with particle ID: " <<  particle_ID
-      << "\n The particle name is: " << particle_name
-      << "\n---------------------------------------------------------" << G4endl;
+  //     G4cout
+  //     << "\n--------------------PostTrackingAction-----------------------"
+  //     << "\n eDep in volume: " << eDep_volume
+  //     << "\n with particle ID: " <<  particle_ID
+  //     << "\n The particle name is: " << particle_name
+  //     << "\n---------------------------------------------------------" << G4endl;
 
-    }
-  }
+  //   }
+  // }
   
   // G4TrackVector* secTracks = fpTrackingManager -> GimmeSecondaries();
   // size_t nrSecTracks;
