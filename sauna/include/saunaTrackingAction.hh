@@ -50,7 +50,7 @@ class saunaTrackingAction : public G4UserTrackingAction
     virtual void PostUserTrackingAction(const G4Track*);
 
   private:
-    G4int counter;
+    // G4int counter;
     saunaEventAction*  fEventAction;
 };
 

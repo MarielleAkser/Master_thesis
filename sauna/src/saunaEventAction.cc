@@ -65,7 +65,11 @@
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 saunaEventAction::saunaEventAction() :
- G4UserEventAction(), fTotalEnergyDeposit_Beta(0.), fTotalEnergyDeposit_NaI(0.)
+ G4UserEventAction(), 
+ fTotalEnergyDeposit_Beta_Particle1(0.), fTotalEnergyDeposit_NaI_Particle1(0.), 
+ fTotalEnergyDeposit_Beta_Particle2(0.), fTotalEnergyDeposit_NaI_Particle2(0.), 
+ fTotalEnergyDeposit_Beta_Particle3(0.), fTotalEnergyDeposit_NaI_Particle3(0.),
+ fNrOfParticlesInAnEvent(0)
 {;} 
 
 saunaEventAction::~saunaEventAction()
@@ -73,23 +77,29 @@ saunaEventAction::~saunaEventAction()
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaEventAction::BeginOfEventAction(const G4Event* )
+void saunaEventAction::BeginOfEventAction(const G4Event* anEvent)
 {
-  fTotalEnergyDeposit_electron = 0.; 
-  fTotalEnergyDeposit_gamma = 0.;
+  fTotalEnergyDeposit_NaI_Particle1 = 0.;
+  fTotalEnergyDeposit_NaI_Particle2 = 0.;
+  fTotalEnergyDeposit_NaI_Particle3 = 0.;
 
-  fTotalEnergyDeposit_NaI = 0.;
-  fTotalEnergyDeposit_Beta = 0.;
+  fTotalEnergyDeposit_Beta_Particle1 = 0.;
+  fTotalEnergyDeposit_Beta_Particle2 = 0.;
+  fTotalEnergyDeposit_Beta_Particle3 = 0.;
 
-  // G4cout
-  // << "\n //////////////// Begin Of EventAction ////////////// \n"
-  // << G4endl;
+  fNrOfParticlesInAnEvent = anEvent->GetNumberOfPrimaryVertex();
+
+  G4cout
+  << "\n //////////////// Begin Of EventAction ////////////// \n"
+  << "nr of particles in each event: " << fNrOfParticlesInAnEvent
+  << "\n //////////////////////////////////////////////////// \n"
+  << G4endl;
 
   // G4int nr_primary_vertex = anEvent->GetNumberOfPrimaryVertex();
   // for (int i=0; i<nr_primary_vertex; i++)
   // {
   //   G4cout
-  //   << "\n track ID : " << anEvent->GetPrimaryVertex(0)->GetPrimary(0)->GetTrackID ()
+  //   << "\n track ID : " << anEvent->GetPrimaryVertex(i)->GetPrimary()->GetTrackID ()
   //   << G4endl;
   // }
   // G4cout
@@ -137,15 +147,33 @@ void saunaEventAction::EndOfEventAction(const G4Event* )
 
   G4cout
   << "\n ---------------------EndOfEvent---------------------- \n"
-   << " The energy deposit in NaI: " << fTotalEnergyDeposit_NaI
-  << " \n and the energy deposit in Beta: " << fTotalEnergyDeposit_Beta
-  << "\n and the parent name in beta: " << fParentName_Beta
+   << " The energy deposit in NaI for particle 1 is: " << fTotalEnergyDeposit_NaI_Particle1
+   << "\n and the mother particle is: " << fParticle1NaI
+
+   << "\n The energy deposit in NaI for particle 2 is: " << fTotalEnergyDeposit_NaI_Particle2
+   << "\n and the mother particle is: " << fParticle2NaI
+
+   << "\n The energy deposit in NaI for particle 3 is: " << fTotalEnergyDeposit_NaI_Particle3
+   << "\n and the mother particle is: " << fParticle3NaI
+
+  << " \n The energy deposit in Beta for particle 1 is: " << fTotalEnergyDeposit_Beta_Particle1
+  << "\n and the mother particle is: " << fParticle1Beta
+
+  << " \n The energy deposit in Beta for particle 2 is: " << fTotalEnergyDeposit_Beta_Particle2
+  << "\n and the mother particle is: " << fParticle2Beta
+
+   << " \n The energy deposit in Beta for particle 3 is: " << fTotalEnergyDeposit_Beta_Particle3
+  << "\n and the mother particle is: " << fParticle3Beta
+
+  << "\n It was " << fNrOfParticlesInAnEvent << " particles from the start of the Event"
   << "\n ----------------------------------------------------- \n"
   << G4endl;
 
   // Filling the files
-  analysisManager->FillNtupleDColumn(1, fTotalEnergyDeposit_NaI);
-  analysisManager->FillNtupleDColumn(3, fTotalEnergyDeposit_Beta);
+  analysisManager->FillNtupleSColumn(0, fParticle1NaI);
+  analysisManager->FillNtupleDColumn(1, fTotalEnergyDeposit_NaI_Particle1);
+  analysisManager->FillNtupleSColumn(2, fParticle1Beta);
+  analysisManager->FillNtupleDColumn(3, fTotalEnergyDeposit_Beta_Particle1);
   analysisManager->AddNtupleRow(); 
 
 

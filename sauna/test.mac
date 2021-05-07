@@ -9,7 +9,7 @@
 #
 /control/verbose 2
 /run/verbose 2
-/event/verbose 0
+/event/verbose 2
 /tracking/verbose 1
 /tracking/storeTrajectory 1
 # 
@@ -29,6 +29,14 @@
 #
 /gps/source/add 1
 #
+/gps/particle e-
+/gps/ene/mono 100 keV
+/gps/pos/centre 0 0. 0. mm
+/gps/ang/type iso
+#
+#
+/gps/source/add 1
+#
 # gamma 662 keV and isotropic angle distribution
 #
 /gps/particle gamma
@@ -36,4 +44,4 @@
 /gps/pos/centre 0 0. 0. mm
 /gps/ang/type iso
 #
-/run/beamOn 10
+/run/beamOn 1

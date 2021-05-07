@@ -58,7 +58,7 @@ void saunaActionInitialization::Build() const
   saunaEventAction* theEventAction = new saunaEventAction;
   SetUserAction(theEventAction);
 
-  // SetUserAction(new saunaTrackingAction(theEventAction));
+  SetUserAction(new saunaTrackingAction(theEventAction));
 
   SetUserAction(new saunaSteppingAction(theEventAction));
 }

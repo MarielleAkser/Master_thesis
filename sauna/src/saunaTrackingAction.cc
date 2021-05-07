@@ -69,12 +69,18 @@ void saunaTrackingAction::PreUserTrackingAction(const G4Track* )
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-void saunaTrackingAction::PostUserTrackingAction(const G4Track* )
+void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
   // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-  // G4int particle_ID = aTrack->GetParentID();
-  // G4String particle_name = aTrack->GetParticleDefinition()->GetParticleName();
+  G4int parent_ID = aTrack->GetParentID();
+
+  G4String detector_name = aTrack->GetStep()->GetPreStepPoint()->GetPhysicalVolume()->GetName();
+
+  G4String particle_name = aTrack->GetParticleDefinition()->GetParticleName();
+
+  G4int track_id = aTrack->GetTrackID();
+
   // G4double energy_deposit = aTrack->GetStep()->GetTotalEnergyDeposit();
   
   // G4String eDep_volume = aTrack->GetVolume()->GetName();
@@ -92,17 +98,22 @@ void saunaTrackingAction::PostUserTrackingAction(const G4Track* )
   // << "\n ------------------------------------------------------------ \n" << G4endl;
 
 
-  // G4TrackVector* secTracks = fpTrackingManager -> GimmeSecondaries();
-  // size_t nrSecTracks = 0;
+  G4TrackVector* secTracks = fpTrackingManager -> GimmeSecondaries();
+  G4int nrSecTracks = (*secTracks).size();
 
-  // if(secTracks) 
-  // { 
-  //    nrSecTracks = (*secTracks).size();       
+  G4cout
+      << "\n--------------------PostTrackingAction-----------------------"
+      << "\n eDep in volume: " << detector_name
+      << "\n with parent ID: " <<  parent_ID
+      << "\n and name: " << particle_name
+      << "\n Track ID: " << track_id
+      << "\n nr of secondary tracks: " << nrSecTracks
+      << "\n---------------------------------------------------------" 
+    << G4endl;
 
-  //    for(size_t i = 0; i < nrSecTracks; i++) { 
-  //       if((*secTracks)[i] -> GetDefinition() == G4Electron::Definition()) 
-  //             counter++;
-  //    }
+  // if (parent_ID > 0 and nrSecTracks > 0 )
+  // {
+  //   fEventAction->Tracks_Created(track_id, nrSecTracks);
   // }
 
 
@@ -120,13 +131,7 @@ void saunaTrackingAction::PostUserTrackingAction(const G4Track* )
   //       analysisManager->FillNtupleSColumn(2, particle_name);
   //     }
 
-  //     G4cout
-  //     << "\n--------------------PostTrackingAction-----------------------"
-  //     << "\n eDep in volume: " << eDep_volume
-  //     << "\n with particle ID: " <<  particle_ID
-  //     << "\n The particle name is: " << particle_name
-  //     << "\n---------------------------------------------------------" << G4endl;
-
+  //     
   //   }
   // }
   
