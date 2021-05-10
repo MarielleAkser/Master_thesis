@@ -11,7 +11,7 @@
 /run/verbose 2
 /event/verbose 2
 /tracking/verbose 1
-/tracking/storeTrajectory 1
+#/tracking/storeTrajectory 1
 # 
 ##########################
 # MORE THAN ONE PARTICLE #
@@ -44,4 +44,4 @@
 /gps/pos/centre 0 0. 0. mm
 /gps/ang/type iso
 #
-/run/beamOn 1
+/run/beamOn 1000

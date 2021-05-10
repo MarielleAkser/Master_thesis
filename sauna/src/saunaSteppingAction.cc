@@ -75,7 +75,9 @@ void saunaSteppingAction::UserSteppingAction(const G4Step* aStep)
     // When gamma i the mother particel the trackID is always == 2
     // And when the electron is the mother particle the track ID == 1
     G4int trackID = aStep->GetTrack()->GetTrackID();
-    G4String detector_name = aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName();
+
+    // G4String detector_name = aStep->GetPostStepPoint()->GetPhysicalVolume()->GetName();
+    G4String detector_name = aStep->GetTrack()->GetVolume()->GetName();
 
     if (detector_name == "Shape1")
     {
@@ -95,12 +97,6 @@ void saunaSteppingAction::UserSteppingAction(const G4Step* aStep)
     << "\n---------------------------------------------------------" << G4endl;
 
   }
-
-
-  // auto secTracks = aStep->GetSecondary();
-  // G4cout
-  // << "\n GetSecondary: size " << (*secTracks).size()
-  // << G4endl;
 
 }
 

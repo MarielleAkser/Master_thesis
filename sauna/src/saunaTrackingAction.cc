@@ -71,8 +71,6 @@ void saunaTrackingAction::PreUserTrackingAction(const G4Track* )
 
 void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
 {
-  // G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
-
   G4int parent_ID = aTrack->GetParentID();
 
   G4String detector_name = aTrack->GetStep()->GetPreStepPoint()->GetPhysicalVolume()->GetName();
@@ -80,23 +78,6 @@ void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
   G4String particle_name = aTrack->GetParticleDefinition()->GetParticleName();
 
   G4int track_id = aTrack->GetTrackID();
-
-  // G4double energy_deposit = aTrack->GetStep()->GetTotalEnergyDeposit();
-  
-  // G4String eDep_volume = aTrack->GetVolume()->GetName();
-
-  // G4double first_E_kin = aTrack->GetStep()->GetPreStepPoint()->GetKineticEnergy();
-  // G4double last_E_kin = aTrack->GetKineticEnergy();
-
-  // G4cout
-  // << "\n--------------------PostTrackingAction-----------------------"
-  // << "\n The Energy deposit is: " << energy_deposit
-  // << "\n In volume: " << eDep_volume
-  // << "\n And the particle name is: " << particle_name
-  // // << "\n First kinetic energy: " << first_E_kin
-  // // << "\n Last kinetic energy: " << last_E_kin
-  // << "\n ------------------------------------------------------------ \n" << G4endl;
-
 
   G4TrackVector* secTracks = fpTrackingManager -> GimmeSecondaries();
   G4int nrSecTracks = (*secTracks).size();
@@ -110,41 +91,5 @@ void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
       << "\n nr of secondary tracks: " << nrSecTracks
       << "\n---------------------------------------------------------" 
     << G4endl;
-
-  // if (parent_ID > 0 and nrSecTracks > 0 )
-  // {
-  //   fEventAction->Tracks_Created(track_id, nrSecTracks);
-  // }
-
-
-  // if (energy_deposit > 0)
-  // {
-  //   if (particle_ID == 0)
-  //   {
-  //     if (eDep_volume == "Shape1")
-  //     {
-  //       analysisManager->FillNtupleSColumn(0, particle_name);
-  //     }
-
-  //     if (eDep_volume == "Shape2")
-  //     {
-  //       analysisManager->FillNtupleSColumn(2, particle_name);
-  //     }
-
-  //     
-  //   }
-  // }
-  
-  // G4TrackVector* secTracks = fpTrackingManager -> GimmeSecondaries();
-  // size_t nrSecTracks;
-
-
-  // G4cout
-  //     << "\n--------------------PostTrackingAction-----------------------"
-  //     << "\n eDep in volume: " << eDep_volume
-  //     << "\n The particle name is: " << particle_name
-  //     << "\n secondaries: " << nrSecTracks
-  //     << "\n---------------------------------------------------------" << G4endl;
-
 
 }

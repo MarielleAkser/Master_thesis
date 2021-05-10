@@ -14,8 +14,9 @@
 #include "G4RunManager.hh"
 
 #include "g4csv.hh"
+#include "G4VNtupleManager.hh"
+#include "G4VAnalysisManager.hh"
 // #include "G4GenericAnalysisManager.hh"
-// #include "G4AnalysisManager.hh"
 
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -49,28 +50,37 @@ void saunaRunAction::BeginOfRunAction(const G4Run*)
   G4RunManager::GetRunManager()->SetRandomNumberStore(false);
   // G4RunManager::GetRunManager()->SetNumberOfEventsToBeStored(2);
 
-  // // Reset all accumulables to their initial values
-  // G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
-  // accumulableManager->Reset();
+  // Reset all accumulables to their initial values
+  G4AccumulableManager* accumulableManager = G4AccumulableManager::Instance();
+  accumulableManager->Reset();
 
   // // Create/get analysis manager
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
   analysisManager->SetVerboseLevel(1);
-  analysisManager->SetFirstNtupleId(1);
+
+  // Open an output file
+  // analysisManager->OpenFile("eDep");
 
   //Create a column ntuple
-  analysisManager->CreateNtuple("detector", "totEdep");
-  // 1) total energy released in the crystals (double), MeV
-  analysisManager->CreateNtupleSColumn("Particle_in_NaI");
-  analysisManager->CreateNtupleDColumn("eDep_in_NaI");
-  analysisManager->CreateNtupleSColumn("Particle_in_Beta");
-  analysisManager->CreateNtupleDColumn("eDep_in_Beta");
-  // //ok, done
+  analysisManager->CreateNtuple("detector", "Edep_and_Particle");
+  // Particle 1
+  analysisManager->CreateNtupleSColumn("Particle1_in_NaI");
+  analysisManager->CreateNtupleDColumn("eDep_particle1_in_NaI");
+  analysisManager->CreateNtupleSColumn("Particle1_in_Beta");
+  analysisManager->CreateNtupleDColumn("eDep_particle1_in_Beta");
+  // Particle 2
+  analysisManager->CreateNtupleSColumn("Particle2_in_NaI");
+  analysisManager->CreateNtupleDColumn("eDep_particle2_in_NaI");
+  analysisManager->CreateNtupleSColumn("Particle2_in_Beta");
+  analysisManager->CreateNtupleDColumn("eDep_particle2_in_Beta");
+  // // Particle 3
+  analysisManager->CreateNtupleSColumn("Particle3_in_NaI");
+  analysisManager->CreateNtupleDColumn("eDep_particle3_in_NaI");
+  analysisManager->CreateNtupleSColumn("Particle3_in_Beta");
+  analysisManager->CreateNtupleDColumn("eDep_particle3_in_Beta");
+  //ok, done
   analysisManager->FinishNtuple();
-
-  // Create a new output file
-  analysisManager->OpenFile("totEdep");
-
+  analysisManager->OpenFile("Edep_and_Particle");
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......

@@ -1,0 +1,16 @@
+#class tools::wcsv::ntuple
+#title Edep_and_Particle
+#separator 44
+#vector_separator 59
+#column string Particle1_in_NaI
+#column double eDep_particle1_in_NaI
+#column string Particle1_in_Beta
+#column double eDep_particle1_in_Beta
+#column string Particle2_in_NaI
+#column double eDep_particle2_in_NaI
+#column string Particle2_in_Beta
+#column double eDep_particle2_in_Beta
+#column string Particle3_in_NaI
+#column double eDep_particle3_in_NaI
+#column string Particle3_in_Beta
+#column double eDep_particle3_in_Beta

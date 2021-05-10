@@ -45,6 +45,7 @@
 #include "G4SystemOfUnits.hh"
 
 #include "g4csv.hh"
+#include "G4VNtupleManager.hh"
 #include "G4GenericAnalysisManager.hh"
 
 #include "G4Track.hh"
@@ -61,6 +62,8 @@
 
 #include "G4Trajectory.hh"
 #include "G4TrajectoryContainer.hh"
+
+#include "G4VAnalysisManager.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -130,21 +133,6 @@ void saunaEventAction::EndOfEventAction(const G4Event* )
 {   
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-  // // Retrieve the collectionID corresponding to hits in the NaI
-  // // The variable fshape1ID is initialized to -1 in EventAction.hh) 
-  // //so this block of code is executed only at the end of the first event. 
-  // if ( fshape1ID == -1 ) 
-  // {
-  //  fshape1ID 
-  //    = G4SDManager::GetSDMpointer()->GetCollectionID("shape1_det/Edep_NaI");
-  // }
-
-  // if ( fshape2ID == -1 ) 
-  // {
-  //  fshape2ID 
-  //    = G4SDManager::GetSDMpointer()->GetCollectionID("shape2_det/Edep_Beta");
-  // }
-
   G4cout
   << "\n ---------------------EndOfEvent---------------------- \n"
    << " The energy deposit in NaI for particle 1 is: " << fTotalEnergyDeposit_NaI_Particle1
@@ -169,11 +157,25 @@ void saunaEventAction::EndOfEventAction(const G4Event* )
   << "\n ----------------------------------------------------- \n"
   << G4endl;
 
+  // G4String Particle1NaI = "namn";
+
   // Filling the files
+  // Particle 1
   analysisManager->FillNtupleSColumn(0, fParticle1NaI);
   analysisManager->FillNtupleDColumn(1, fTotalEnergyDeposit_NaI_Particle1);
   analysisManager->FillNtupleSColumn(2, fParticle1Beta);
   analysisManager->FillNtupleDColumn(3, fTotalEnergyDeposit_Beta_Particle1);
+  // Particle 2
+  analysisManager->FillNtupleSColumn(4, fParticle2NaI);
+  analysisManager->FillNtupleDColumn(5, fTotalEnergyDeposit_NaI_Particle2);
+  analysisManager->FillNtupleSColumn(6, fParticle2Beta);
+  analysisManager->FillNtupleDColumn(7, fTotalEnergyDeposit_Beta_Particle2);
+  // // Particle 3
+  analysisManager->FillNtupleSColumn(8, fParticle3NaI);
+  analysisManager->FillNtupleDColumn(9, fTotalEnergyDeposit_NaI_Particle3);
+  analysisManager->FillNtupleSColumn(10, fParticle3Beta);
+  analysisManager->FillNtupleDColumn(11, fTotalEnergyDeposit_Beta_Particle3);
+  // New row
   analysisManager->AddNtupleRow(); 
 
 
