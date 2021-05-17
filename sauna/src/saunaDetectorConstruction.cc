@@ -48,6 +48,9 @@
 
 #include "G4RotationMatrix.hh"
 #include "G4Transform3D.hh"
+#include "G4SubtractionSolid.hh"
+#include "G4VSolid.hh"
+#include "G4BooleanSolid.hh"
 #include "G4SDManager.hh"
 
 #include "G4MultiFunctionalDetector.hh"
@@ -120,21 +123,59 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                       checkOverlaps);        //overlaps checking
                      
 
+
+
   // ------------------------------------------------------------------
-  // shape1 = NaI(Tl) detector
+  // Shapes for subtractions
+  // ------------------------------------------------------------------
+    
+  G4double bigBetaCyl_rmin = 0*mm, bigBetaCyl_rmax = 7.35*mm;
+  G4double bigBetaCyl_hz = (50.8/2)*mm;
+  G4double bigBetaCyl_phimin = 0.*deg, bigBetaCyl_phimax = 360.*deg; 
+
+  G4double smallBetaCyl_rmin = 0*mm, smallBetaCyl_rmax = 6.35*mm;
+  G4double smallBetaCyl_hz = (bigBetaCyl_hz - 2)*mm;
+  G4double smallBetaCyl_phimin = 0.*deg, smallBetaCyl_phimax = 360.*deg;
+
+  G4double NaIcyl_rmin =  0.0*cm, NaIcyl_rmax = (10.16/2)*cm;
+  G4double NaIcyl_hz = (12.7/2)*cm;
+  G4double NaIcyl_phimin = 0.*deg, NaIcyl_phimax = 360.*deg;
+
+
+  G4VSolid* bigBetaCyl = 
+    new G4Tubs("BigBetaCyl", 
+    bigBetaCyl_rmin, bigBetaCyl_rmax, bigBetaCyl_hz, bigBetaCyl_phimin, bigBetaCyl_phimax); 
+
+  G4VSolid* smallBetaCyl = 
+    new G4Tubs("SmallBetaCyl", 
+    smallBetaCyl_rmin, smallBetaCyl_rmax, smallBetaCyl_hz, smallBetaCyl_phimin, smallBetaCyl_phimax);
+
+  G4VSolid* NaIcyl = 
+    new G4Tubs("NaIcyl", 
+    NaIcyl_rmin, NaIcyl_rmax, NaIcyl_hz, NaIcyl_phimin, NaIcyl_phimax);
+
+
+
+  // ------------------------------------------------------------------
+  // shape1 = NaI detector
   // ------------------------------------------------------------------
   
   G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_SODIUM_IODIDE");
   G4ThreeVector pos1 = G4ThreeVector(0., 0., 0.);
         
   // Cylinder section shape       
-  G4double shape1_rmin =  0.0*cm, shape1_rmax = (10.16/2)*cm;
-  G4double shape1_hz = (12.7/2)*cm;
-  G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
+  // G4double shape1_rmin =  0.0*cm, shape1_rmax = (10.16/2)*cm;
+  // G4double shape1_hz = (12.7/2)*cm;
+  // G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
+
+  G4RotationMatrix* rm = new G4RotationMatrix();
+  rm->rotateX(90.*deg);
+
+  G4VSolid* solidShape1 = new G4SubtractionSolid("Shape1", NaIcyl, bigBetaCyl, rm, pos1);
   
-  G4Tubs* solidShape1 =    
-    new G4Tubs("Shape1", 
-    shape1_rmin, shape1_rmax, shape1_hz, shape1_phimin, shape1_phimax);
+  // G4Tubs* solidShape1 =    
+  //   new G4Tubs("Shape1", 
+  //   shape1_rmin, shape1_rmax, shape1_hz, shape1_phimin, shape1_phimax);
 
   G4LogicalVolume* logicShape1 =                         
     new G4LogicalVolume(solidShape1,         //its solid
@@ -160,16 +201,17 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   
   // The material and position
   G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_ANTHRACENE");
-  G4ThreeVector pos2 = G4ThreeVector(0., 0., (shape1_rmin)); 
+  G4ThreeVector pos2 = G4ThreeVector(0., 0., (NaIcyl_rmin)); 
 
-  // Cylinder shape       
-  G4double shape2_rmin = 0.0*mm, shape2_rmax = 6.35*mm;
-  G4double shape2_hz = (50.8/2)*mm;
-  G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
+  G4VSolid* solidShape2 = new G4SubtractionSolid("Shape2", bigBetaCyl, smallBetaCyl, 0, pos2);
+
+  // G4double shape2_rmin = 6.35*mm, shape2_rmax = 7.35*mm;
+  // G4double shape2_hz = (50.8/2)*mm;
+  // G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
   
-  G4Tubs* solidShape2 =    
-    new G4Tubs("Shape2", 
-    shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
+  // G4Tubs* solidShape2 =    
+  //   new G4Tubs("Shape2", 
+  //   shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
   
   G4LogicalVolume* logicShape2 =                         
     new G4LogicalVolume(solidShape2,         //its solid
@@ -223,10 +265,10 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   // ------------------------------------------------------------------
   
   G4Material* PM_Mat = nist->FindOrBuildMaterial("G4_Al");
-  G4ThreeVector posPM = G4ThreeVector(0., 0., 2*shape2_hz);
+  G4ThreeVector posPM = G4ThreeVector(0., 0., 2*bigBetaCyl_hz);
 
   G4double PM_rmin = 0.0*mm, PM_rmax = 6.35*mm;
-  G4double PM_hz = ShieldLead_rmax/2 - shape2_hz;
+  G4double PM_hz = ShieldLead_rmax/2 - bigBetaCyl_hz;
   G4double PM_phimin = 0.*deg, PM_phimax = 360.*deg;
 
   // Cylinder shape 
@@ -263,7 +305,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                
   new G4PVPlacement(0,                       //no rotation
                     -posPM,                //at position
-                    logicPM1,             //its logical volume
+                    logicPM2,             //its logical volume
                     "PM2",                //its name
                     logicWorld,              //its mother  volume
                     false,                   //no boolean operation

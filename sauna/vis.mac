@@ -94,10 +94,6 @@
 /vis/set/colour        # Revert to default colour (white)
 /vis/set/lineWidth     # Revert to default line width (1.)
 #
-# Attach text to one edge of Shape1, with a small, fixed offset
-#/vis/scene/add/text 0 8 -4 cm 18 4 4 NaI(Tl)
-# Attach text to one corner of Shape2, with a small, fixed offset
-#/vis/scene/add/text 6 7 10 cm 18 4 4 Shape2
 #
 # To get nice view
 # Make the "World" box invisible
@@ -108,7 +104,7 @@
 /vis/geometry/set/colour Shape1 1 0 1 1 0.3
 #
 /vis/geometry/set/visibility Shape2 1 true
-/vis/geometry/set/colour Shape2 1 0 0 1 0.5
+/vis/geometry/set/colour Shape2 1 0 0 1 0.7
 #
 /vis/geometry/set/visibility PM1 1 true
 /vis/geometry/set/colour PM1 1 1 1 0 0.5
