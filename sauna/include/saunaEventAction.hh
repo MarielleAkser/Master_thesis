@@ -138,13 +138,13 @@ class saunaEventAction : public G4UserEventAction
   G4String fParticle2Beta {" "};
   G4String fParticle3Beta {" "};
 
-  G4double fTotalEnergyDeposit_Beta_Particle1 { 0 };
-  G4double fTotalEnergyDeposit_Beta_Particle2 { 0 };
-  G4double fTotalEnergyDeposit_Beta_Particle3 { 0 };
+  G4double fTotalEnergyDeposit_Beta_Particle1 {};
+  G4double fTotalEnergyDeposit_Beta_Particle2 {};
+  G4double fTotalEnergyDeposit_Beta_Particle3 {};
 
-  G4double fTotalEnergyDeposit_NaI_Particle1 { 0 };
-  G4double fTotalEnergyDeposit_NaI_Particle2 { 0 };
-  G4double fTotalEnergyDeposit_NaI_Particle3 { 0 };
+  G4double fTotalEnergyDeposit_NaI_Particle1 {};
+  G4double fTotalEnergyDeposit_NaI_Particle2 {};
+  G4double fTotalEnergyDeposit_NaI_Particle3 {};
 
   G4int fNrOfParticlesInAnEvent { 0 };
 

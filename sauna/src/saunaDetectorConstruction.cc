@@ -233,10 +233,11 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   // ------------------------------------------------------------------
  
   G4Material* LeadMat = nist->FindOrBuildMaterial("G4_Pb");
+  
         
   // Cylinder section shape       
-  G4double ShieldLead_rmin =  (10.16/2 + 0.1)*cm, ShieldLead_rmax = 10.08*cm;
-  G4double ShieldLead_hz = (12.7/2)*cm;
+  G4double ShieldLead_rmin =  NaIcyl_rmax, ShieldLead_rmax = (ShieldLead_rmin + 5*cm);
+  G4double ShieldLead_hz = NaIcyl_hz;
   G4double ShieldLead_phimin = 0.*deg, ShieldLead_phimax = 360.*deg;
   
   G4Tubs* solidShieldLead =    
@@ -267,7 +268,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4Material* PM_Mat = nist->FindOrBuildMaterial("G4_Al");
   G4ThreeVector posPM = G4ThreeVector(0., 0., 2*bigBetaCyl_hz);
 
-  G4double PM_rmin = 0.0*mm, PM_rmax = 6.35*mm;
+  G4double PM_rmin = 0.0*mm, PM_rmax = bigBetaCyl_rmax;
   G4double PM_hz = ShieldLead_rmax/2 - bigBetaCyl_hz;
   G4double PM_phimin = 0.*deg, PM_phimax = 360.*deg;
 
