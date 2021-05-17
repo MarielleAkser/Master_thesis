@@ -154,41 +154,14 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
 
-
-  // ------------------------------------------------------------------
-  // Lead-shield 
-  // ------------------------------------------------------------------
- 
-  // G4Material* LeadMat = nist->FindOrBuildMaterial("G4_Pb");
-        
-  // // Cylinder section shape       
-  // G4double ShieldLead_rmin =  5.08*cm, ShieldLead_rmax = 10.08*cm;
-  // G4double ShieldLead_hz = (12.7/2)*cm;
-  // G4double ShieldLead_phimin = 0.*deg, ShieldLead_phimax = 360.*deg;
-  
-  // G4Tubs* solidShieldLead =    
-  //   new G4Tubs("ShieldLead", 
-  //   ShieldLead_rmin, ShieldLead_rmax, ShieldLead_hz, ShieldLead_phimin, ShieldLead_phimax);
-
-  // G4LogicalVolume* logicShieldLead =                         
-  //   new G4LogicalVolume(solidShieldLead,         //its solid
-  //                       LeadMat,          //its material
-  //                       "ShieldLead");           //its name
-
-
-  // new G4PVPlacement(rotationMatrix,          //rotation 90deg in x
-  //                   pos1,                    //at position
-  //                   logicShieldLead,             //its logical volume
-  //                   "ShieldLead",                //its name
-  //                   logicWorld,                //its mother volume
-  //                   false,                   //no boolean operation
-  //                   0,                       //copy number
-  //                   checkOverlaps);          //overlaps checking
-
   // ------------------------------------------------------------------
   // Shape 2 = beta detector 
   // ------------------------------------------------------------------
   
+  // The material and position
+  G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_ANTHRACENE");
+  G4ThreeVector pos2 = G4ThreeVector(0., 0., (shape1_rmin)); 
+
   // Cylinder shape       
   G4double shape2_rmin = 0.0*mm, shape2_rmax = 6.35*mm;
   G4double shape2_hz = (50.8/2)*mm;
@@ -197,11 +170,6 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4Tubs* solidShape2 =    
     new G4Tubs("Shape2", 
     shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
-
-  // The material and position
-  G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_ANTHRACENE");
-  G4ThreeVector pos2 = G4ThreeVector(0., 0., (shape1_rmin)); 
-
   
   G4LogicalVolume* logicShape2 =                         
     new G4LogicalVolume(solidShape2,         //its solid
@@ -217,34 +185,93 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
   
+
   // ------------------------------------------------------------------
-  // Shape 3 = beta detector 
+  // Lead-shield 
+  // ------------------------------------------------------------------
+ 
+  G4Material* LeadMat = nist->FindOrBuildMaterial("G4_Pb");
+        
+  // Cylinder section shape       
+  G4double ShieldLead_rmin =  (10.16/2 + 0.1)*cm, ShieldLead_rmax = 10.08*cm;
+  G4double ShieldLead_hz = (12.7/2)*cm;
+  G4double ShieldLead_phimin = 0.*deg, ShieldLead_phimax = 360.*deg;
+  
+  G4Tubs* solidShieldLead =    
+    new G4Tubs("ShieldLead", 
+    ShieldLead_rmin, ShieldLead_rmax, ShieldLead_hz, ShieldLead_phimin, ShieldLead_phimax);
+
+  G4LogicalVolume* logicShieldLead =                         
+    new G4LogicalVolume(solidShieldLead,         //its solid
+                        LeadMat,          //its material
+                        "ShieldLead");           //its name
+
+
+  new G4PVPlacement(rotationMatrix,          //rotation 90deg in x
+                    pos1,                    //at position
+                    logicShieldLead,             //its logical volume
+                    "ShieldLead",                //its name
+                    logicWorld,                //its mother volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+
+
+  // ------------------------------------------------------------------
+  // PM-tube1
   // ------------------------------------------------------------------
   
-  // Cylinder shape, with the same dimentions as shape2    
-  // G4Tubs* solidShape3 =    
-  //   new G4Tubs("Shape3", 
-  //   shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
+  G4Material* PM_Mat = nist->FindOrBuildMaterial("G4_Al");
+  G4ThreeVector posPM = G4ThreeVector(0., 0., 2*shape2_hz);
+
+  G4double PM_rmin = 0.0*mm, PM_rmax = 6.35*mm;
+  G4double PM_hz = ShieldLead_rmax/2 - shape2_hz;
+  G4double PM_phimin = 0.*deg, PM_phimax = 360.*deg;
+
+  // Cylinder shape 
+  G4Tubs* solidPM1 =    
+    new G4Tubs("PM1", 
+    PM_rmin, PM_rmax, PM_hz, PM_phimin, PM_phimax);
   
-  // G4LogicalVolume* logicShape3 =                         
-  //   new G4LogicalVolume(solidShape3,         //its solid
-  //                       shape2_mat,          //its material (same as shape 2)
-  //                       "Shape3");           //its name
+  G4LogicalVolume* logicPM1 =                         
+    new G4LogicalVolume(solidPM1,         //its solid
+                        PM_Mat,          //its material 
+                        "PM1");           //its name
                
-  // new G4PVPlacement(0,                       //no rotation
-  //                   -pos2,                   //at position
-  //                   logicShape3,             //its logical volume
-  //                   "Shape3",                //its name
-  //                   logicWorld,              //its mother  volume
-  //                   false,                   //no boolean operation
-  //                   0,                       //copy number
-  //                   checkOverlaps);          //overlaps checking
+  new G4PVPlacement(0,                       //no rotation
+                    posPM,                //at position
+                    logicPM1,             //its logical volume
+                    "PM1",                //its name
+                    logicWorld,              //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
                      
-  // // Set Shape2 and 3 as scoring volume
-  // //
-  // fScoringVolume = logicShape2;
-  // fScoringVolume = logicShape3;
-  //
+// ------------------------------------------------------------------
+// PM-tube2
+// ------------------------------------------------------------------
+  // Cylinder shape 
+  G4Tubs* solidPM2 =    
+    new G4Tubs("PM2", 
+    PM_rmin, PM_rmax, PM_hz, PM_phimin, PM_phimax);   // Same size as PM1
+  
+  G4LogicalVolume* logicPM2 =                         
+    new G4LogicalVolume(solidPM2,         //its solid
+                        PM_Mat,          //its material 
+                        "PM2");           //its name
+               
+  new G4PVPlacement(0,                       //no rotation
+                    -posPM,                //at position
+                    logicPM1,             //its logical volume
+                    "PM2",                //its name
+                    logicWorld,              //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+
+
+  
   //always return the physical World
   return physWorld;
 }
@@ -269,13 +296,6 @@ void saunaDetectorConstruction::ConstructSDandField()
   G4SDManager::GetSDMpointer()->AddNewDetector(scorerShape2);
 
   G4VPrimitiveScorer* primitiv2 = new G4PSEnergyDeposit("Edep_Beta");
-
-  // Filter to only read gamma-rays:
-  // G4SDParticleFilter* gammafilter =
-  //   new G4SDParticleFilter("gammaFilter");
-  // gammafilter->add("gamma");
-
-  // primitiv1->SetFilter(gammafilter);
   
   scorerShape1->RegisterPrimitive(primitiv1);
   scorerShape2->RegisterPrimitive(primitiv2);

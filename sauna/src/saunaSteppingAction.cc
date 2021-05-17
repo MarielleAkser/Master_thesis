@@ -88,13 +88,13 @@ void saunaSteppingAction::UserSteppingAction(const G4Step* aStep)
       fEventAction->Add_eDep_Beta(eDep_step, trackID, parentID, particle_name);
     }
 
-    G4cout
-    << "\n--------- SteppingAction  ------------"
-    << "\n The trackID: " << trackID 
-    << "\n with the energy deposit: " << eDep_step
-    << "\n and the detector is: " << detector_name
-    << "\n particle name: " << particle_name
-    << "\n---------------------------------------------------------" << G4endl;
+    // G4cout
+    // << "\n--------- SteppingAction  ------------"
+    // << "\n The trackID: " << trackID 
+    // << "\n with the energy deposit: " << eDep_step
+    // << "\n and the detector is: " << detector_name
+    // << "\n particle name: " << particle_name
+    // << "\n---------------------------------------------------------" << G4endl;
 
   }
 
