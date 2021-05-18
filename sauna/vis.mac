@@ -98,7 +98,7 @@
 # To get nice view
 # Make the "World" box invisible
 /vis/geometry/set/visibility World 0 true
-/vis/geometry/set/colour World 0 0 0 0.3 .3
+/vis/geometry/set/colour World 0 0 0 0 0
 #
 /vis/geometry/set/visibility Shape1 1 true
 /vis/geometry/set/colour Shape1 1 0 1 1 0.3
@@ -114,6 +114,9 @@
 #
 # Make the lead shield less visible
 /vis/geometry/set/visibility ShieldLead 1 true
+/vis/geometry/set/colour ShieldLead 0 0.5 0.5 0.5 0.1
+#
+/vis/geometry/set/visibility ShieldLeadPuck 1 true
 /vis/geometry/set/colour ShieldLead 0 0.5 0.5 0.5 0.1
 #
 # Make the Al Layer less visible

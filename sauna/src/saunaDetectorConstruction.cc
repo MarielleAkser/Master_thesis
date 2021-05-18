@@ -256,7 +256,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   // ------------------------------------------------------------------
  
   G4Material* LeadMat = nist->FindOrBuildMaterial("G4_Pb");
-   
+  
   G4double ShieldLead_rmin =  NaIcyl_rmax, ShieldLead_rmax = (ShieldLead_rmin + 5*cm);
   G4double ShieldLead_hz = NaIcyl_hz;
   G4double ShieldLead_phimin = 0.*deg, ShieldLead_phimax = 360.*deg;
@@ -279,6 +279,42 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
+
+  // Top and bottom Lead Shield
+  G4double ShieldLeadPuck_rmin = 0, ShieldLeadPuck_rmax = ShieldLead_rmax;
+  G4double ShieldLeadPuck_hz = 5/2*cm;
+  G4double ShieldLeadPuck_phimin = 0.*deg, ShieldLeadPuck_phimax = 360.*deg;
+
+  G4ThreeVector posLeadPuck = G4ThreeVector(0., NaIcyl_hz + ShieldLeadPuck_hz, 0.);
+
+  G4Tubs* solidShieldLeadPuck =    
+    new G4Tubs("ShieldLeadPuck", 
+    ShieldLeadPuck_rmin, ShieldLeadPuck_rmax, ShieldLeadPuck_hz, ShieldLeadPuck_phimin, ShieldLeadPuck_phimax);
+
+  G4LogicalVolume* logicShieldLeadPuck =                         
+    new G4LogicalVolume(solidShieldLeadPuck,         //its solid
+                        LeadMat,                  //its material
+                        "ShieldLeadPuck");           //its name
+
+  new G4PVPlacement(rotationMatrix,          //rotation 90deg in x
+                    posLeadPuck,                    //at position
+                    logicShieldLeadPuck,             //its logical volume
+                    "ShieldLead",                //its name
+                    logicWorld,                //its mother volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+  
+
+  new G4PVPlacement(rotationMatrix,          //rotation 90deg in x
+                    -posLeadPuck,                    //at position
+                    logicShieldLeadPuck,             //its logical volume
+                    "ShieldLead",                //its name
+                    logicWorld,                //its mother volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+  
 
 
   // ------------------------------------------------------------------
