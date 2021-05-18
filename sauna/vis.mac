@@ -116,6 +116,10 @@
 /vis/geometry/set/visibility ShieldLead 1 true
 /vis/geometry/set/colour ShieldLead 0 0.5 0.5 0.5 0.1
 #
+# Make the Al Layer less visible
+/vis/geometry/set/visibility AlLayer 1 true
+/vis/geometry/set/colour AlLayer 1 1 0 0 0.1
+#
 /vis/viewer/set/style surface
 /vis/viewer/set/hiddenMarker true
 /vis/viewer/set/viewpointThetaPhi 120 150

@@ -36,7 +36,6 @@
 #include "G4Electron.hh"
 
 /// Event action class
-
 class saunaEventAction : public G4UserEventAction
 {
   public:
@@ -123,8 +122,6 @@ class saunaEventAction : public G4UserEventAction
 
     }
 
-    
-
   private:
   // Numerical IDs for hit collections (-1 means unknown yet)
   G4int fshape1ID { -1 };
@@ -138,13 +135,13 @@ class saunaEventAction : public G4UserEventAction
   G4String fParticle2Beta {" "};
   G4String fParticle3Beta {" "};
 
-  G4double fTotalEnergyDeposit_Beta_Particle1 {};
-  G4double fTotalEnergyDeposit_Beta_Particle2 {};
-  G4double fTotalEnergyDeposit_Beta_Particle3 {};
+  G4double fTotalEnergyDeposit_Beta_Particle1;
+  G4double fTotalEnergyDeposit_Beta_Particle2;
+  G4double fTotalEnergyDeposit_Beta_Particle3;
 
-  G4double fTotalEnergyDeposit_NaI_Particle1 {};
-  G4double fTotalEnergyDeposit_NaI_Particle2 {};
-  G4double fTotalEnergyDeposit_NaI_Particle3 {};
+  G4double fTotalEnergyDeposit_NaI_Particle1;
+  G4double fTotalEnergyDeposit_NaI_Particle2;
+  G4double fTotalEnergyDeposit_NaI_Particle3;
 
   G4int fNrOfParticlesInAnEvent { 0 };
 

@@ -92,7 +92,6 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   G4NistManager* nist = G4NistManager::Instance();
   G4bool checkOverlaps = true;
 
-  
   // ------------------------------------------------------------------    
   // World
   // ------------------------------------------------------------------
@@ -155,27 +154,20 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
     NaIcyl_rmin, NaIcyl_rmax, NaIcyl_hz, NaIcyl_phimin, NaIcyl_phimax);
 
 
-
   // ------------------------------------------------------------------
   // shape1 = NaI detector
   // ------------------------------------------------------------------
   
   G4Material* shape1_mat = nist->FindOrBuildMaterial("G4_SODIUM_IODIDE");
   G4ThreeVector pos1 = G4ThreeVector(0., 0., 0.);
-        
-  // Cylinder section shape       
-  // G4double shape1_rmin =  0.0*cm, shape1_rmax = (10.16/2)*cm;
-  // G4double shape1_hz = (12.7/2)*cm;
-  // G4double shape1_phimin = 0.*deg, shape1_phimax = 360.*deg;
 
   G4RotationMatrix* rm = new G4RotationMatrix();
   rm->rotateX(90.*deg);
 
+  // Getting the volume of the NaI. It is a hole for the beta-cell 
+  // so that volume is subtracted
   G4VSolid* solidShape1 = new G4SubtractionSolid("Shape1", NaIcyl, bigBetaCyl, rm, pos1);
   
-  // G4Tubs* solidShape1 =    
-  //   new G4Tubs("Shape1", 
-  //   shape1_rmin, shape1_rmax, shape1_hz, shape1_phimin, shape1_phimax);
 
   G4LogicalVolume* logicShape1 =                         
     new G4LogicalVolume(solidShape1,         //its solid
@@ -195,23 +187,26 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
 
+
   // ------------------------------------------------------------------
   // Shape 2 = beta detector 
   // ------------------------------------------------------------------
   
   // The material and position
-  G4Material* shape2_mat = nist->FindOrBuildMaterial("G4_ANTHRACENE");
+  G4double density = 1.032*g/cm3;
+
+  G4Material* hydrogen = nist->FindOrBuildMaterial("G4_H");
+  G4Material* carbone = nist->FindOrBuildMaterial("G4_C");
+
+  G4Material* shape2_mat = new G4Material("BC404",density, 2);
+  shape2_mat->AddMaterial(hydrogen, 8.4*perCent);
+  shape2_mat->AddMaterial(carbone, 91.6*perCent);
+
   G4ThreeVector pos2 = G4ThreeVector(0., 0., (NaIcyl_rmin)); 
 
+  // Getting the volume of the Beta-cell by subtracting the two 
+  // beta cylinders define above
   G4VSolid* solidShape2 = new G4SubtractionSolid("Shape2", bigBetaCyl, smallBetaCyl, 0, pos2);
-
-  // G4double shape2_rmin = 6.35*mm, shape2_rmax = 7.35*mm;
-  // G4double shape2_hz = (50.8/2)*mm;
-  // G4double shape2_phimin = 0.*deg, shape2_phimax = 360.*deg;     
-  
-  // G4Tubs* solidShape2 =    
-  //   new G4Tubs("Shape2", 
-  //   shape2_rmin, shape2_rmax, shape2_hz, shape2_phimin, shape2_phimax);
   
   G4LogicalVolume* logicShape2 =                         
     new G4LogicalVolume(solidShape2,         //its solid
@@ -229,13 +224,39 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   
 
   // ------------------------------------------------------------------
+  // Aluminum layer covering Beta cell
+  // ------------------------------------------------------------------
+
+  G4Material* AlLayer_mat = nist->FindOrBuildMaterial("G4_Al");
+
+  G4double AlLayer_rmin = bigBetaCyl_rmax, AlLayer_rmax = AlLayer_rmin + 0.2*mm;
+  G4double AlLayer_hz = bigBetaCyl_hz;
+  G4double AlLayer_phimin = 0.*deg, AlLayer_phimax = 360.*deg; 
+
+  G4Tubs* solidAlLayer =    
+    new G4Tubs("AlLayer", 
+    AlLayer_rmin, AlLayer_rmax, AlLayer_hz, AlLayer_phimin, AlLayer_phimax);
+
+  G4LogicalVolume* logicAlLayer =                         
+    new G4LogicalVolume(solidAlLayer,         //its solid
+                        AlLayer_mat,          //its material
+                        "AlLayer");           //its name
+               
+  new G4PVPlacement(0,                       //no rotation
+                    pos2,                    //at position
+                    logicAlLayer,             //its logical volume
+                    "AlLayer",                //its name
+                    logicWorld,                //its mother  volume
+                    false,                   //no boolean operation
+                    0,                       //copy number
+                    checkOverlaps);          //overlaps checking
+  
+  // ------------------------------------------------------------------
   // Lead-shield 
   // ------------------------------------------------------------------
  
   G4Material* LeadMat = nist->FindOrBuildMaterial("G4_Pb");
-  
-        
-  // Cylinder section shape       
+   
   G4double ShieldLead_rmin =  NaIcyl_rmax, ShieldLead_rmax = (ShieldLead_rmin + 5*cm);
   G4double ShieldLead_hz = NaIcyl_hz;
   G4double ShieldLead_phimin = 0.*deg, ShieldLead_phimax = 360.*deg;
@@ -258,7 +279,6 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
                     false,                   //no boolean operation
                     0,                       //copy number
                     checkOverlaps);          //overlaps checking
-
 
 
   // ------------------------------------------------------------------
@@ -294,7 +314,7 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
 // ------------------------------------------------------------------
 // PM-tube2
 // ------------------------------------------------------------------
-  // Cylinder shape 
+
   G4Tubs* solidPM2 =    
     new G4Tubs("PM2", 
     PM_rmin, PM_rmax, PM_hz, PM_phimin, PM_phimax);   // Same size as PM1
