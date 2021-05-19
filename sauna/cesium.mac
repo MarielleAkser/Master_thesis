@@ -18,7 +18,9 @@
 # gamma 662 keV from (0,0,0) and isotropic angle distribution
 #
 /gps/particle gamma
-/gps/ene/mono 662 keV
+/gps/ene/type Gauss
+/gps/ene/mono 661.657 keV
+/gps/ene/sigma 0.003 keV
 /gps/pos/centre 0 0. 0. mm
 /gps/ang/type iso
 /run/beamOn 1000000
