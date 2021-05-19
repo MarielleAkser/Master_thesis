@@ -25,8 +25,8 @@
 /gps/ene/mono 300 keV
 /gps/pos/type Volume
 /gps/pos/shape Cylinder
-/gps/pos/radius 6.35 mm
-/gps/pos/halfz 23.4 mm
+/gps/pos/radius 9 mm
+/gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
 #
@@ -36,8 +36,8 @@
 /gps/ene/mono 100 keV
 /gps/pos/type Volume
 /gps/pos/shape Cylinder
-/gps/pos/radius 6.35 mm
-/gps/pos/halfz 23.4 mm
+/gps/pos/radius 1 mm
+/gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
 #
@@ -49,8 +49,8 @@
 /gps/ene/mono 662 keV
 /gps/pos/type Volume
 /gps/pos/shape Cylinder
-/gps/pos/radius 6.35 mm
-/gps/pos/halfz 23.4 mm
+/gps/pos/radius 1 mm
+/gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
 /run/beamOn 10

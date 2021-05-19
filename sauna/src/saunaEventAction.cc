@@ -92,11 +92,11 @@ void saunaEventAction::BeginOfEventAction(const G4Event* anEvent)
 
   fNrOfParticlesInAnEvent = anEvent->GetNumberOfPrimaryVertex();
 
-  G4cout
-  << "\n //////////////// Begin Of EventAction ////////////// \n"
-  << "nr of particles in each event: " << fNrOfParticlesInAnEvent
-  << "\n //////////////////////////////////////////////////// \n"
-  << G4endl;
+  // G4cout
+  // << "\n //////////////// Begin Of EventAction ////////////// \n"
+  // << "nr of particles in each event: " << fNrOfParticlesInAnEvent
+  // << "\n //////////////////////////////////////////////////// \n"
+  // << G4endl;
 
   // G4int nr_primary_vertex = anEvent->GetNumberOfPrimaryVertex();
   // for (int i=0; i<nr_primary_vertex; i++)
@@ -133,29 +133,29 @@ void saunaEventAction::EndOfEventAction(const G4Event* )
 {   
   G4AnalysisManager* analysisManager = G4AnalysisManager::Instance();
 
-  G4cout
-  << "\n ---------------------EndOfEvent---------------------- \n"
-   << " The energy deposit in NaI for particle 1 is: " << fTotalEnergyDeposit_NaI_Particle1
-   << "\n and the mother particle is: " << fParticle1NaI
+  // G4cout
+  // << "\n ---------------------EndOfEvent---------------------- \n"
+  //  << " The energy deposit in NaI for particle 1 is: " << fTotalEnergyDeposit_NaI_Particle1
+  //  << "\n and the mother particle is: " << fParticle1NaI
 
-   << "\n The energy deposit in NaI for particle 2 is: " << fTotalEnergyDeposit_NaI_Particle2
-   << "\n and the mother particle is: " << fParticle2NaI
+  //  << "\n The energy deposit in NaI for particle 2 is: " << fTotalEnergyDeposit_NaI_Particle2
+  //  << "\n and the mother particle is: " << fParticle2NaI
 
-   << "\n The energy deposit in NaI for particle 3 is: " << fTotalEnergyDeposit_NaI_Particle3
-   << "\n and the mother particle is: " << fParticle3NaI
+  //  << "\n The energy deposit in NaI for particle 3 is: " << fTotalEnergyDeposit_NaI_Particle3
+  //  << "\n and the mother particle is: " << fParticle3NaI
 
-  << " \n The energy deposit in Beta for particle 1 is: " << fTotalEnergyDeposit_Beta_Particle1
-  << "\n and the mother particle is: " << fParticle1Beta
+  // << " \n The energy deposit in Beta for particle 1 is: " << fTotalEnergyDeposit_Beta_Particle1
+  // << "\n and the mother particle is: " << fParticle1Beta
 
-  << " \n The energy deposit in Beta for particle 2 is: " << fTotalEnergyDeposit_Beta_Particle2
-  << "\n and the mother particle is: " << fParticle2Beta
+  // << " \n The energy deposit in Beta for particle 2 is: " << fTotalEnergyDeposit_Beta_Particle2
+  // << "\n and the mother particle is: " << fParticle2Beta
 
-   << " \n The energy deposit in Beta for particle 3 is: " << fTotalEnergyDeposit_Beta_Particle3
-  << "\n and the mother particle is: " << fParticle3Beta
+  //  << " \n The energy deposit in Beta for particle 3 is: " << fTotalEnergyDeposit_Beta_Particle3
+  // << "\n and the mother particle is: " << fParticle3Beta
 
-  << "\n It was " << fNrOfParticlesInAnEvent << " particles from the start of the Event"
-  << "\n ----------------------------------------------------- \n"
-  << G4endl;
+  // << "\n It was " << fNrOfParticlesInAnEvent << " particles from the start of the Event"
+  // << "\n ----------------------------------------------------- \n"
+  // << G4endl;
 
   // G4String Particle1NaI = "namn";
 

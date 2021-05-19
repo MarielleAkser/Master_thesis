@@ -128,12 +128,12 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   // Shapes for subtractions
   // ------------------------------------------------------------------
     
-  G4double bigBetaCyl_rmin = 0*mm, bigBetaCyl_rmax = 7.35*mm;
-  G4double bigBetaCyl_hz = (50.8/2)*mm;
+  G4double bigBetaCyl_rmin = 0*mm, bigBetaCyl_rmax = 10*mm; //Mått från Tomas
+  G4double bigBetaCyl_hz = (70/2)*mm; //Mått från Tomas
   G4double bigBetaCyl_phimin = 0.*deg, bigBetaCyl_phimax = 360.*deg; 
 
-  G4double smallBetaCyl_rmin = 0*mm, smallBetaCyl_rmax = 6.35*mm;
-  G4double smallBetaCyl_hz = (bigBetaCyl_hz - 2)*mm;
+  G4double smallBetaCyl_rmin = 0*mm, smallBetaCyl_rmax = bigBetaCyl_rmax - 1*mm;
+  G4double smallBetaCyl_hz = bigBetaCyl_hz - 2.5*mm;
   G4double smallBetaCyl_phimin = 0.*deg, smallBetaCyl_phimax = 360.*deg;
 
   G4double NaIcyl_rmin =  0.0*cm, NaIcyl_rmax = (10.16/2)*cm;
@@ -322,11 +322,12 @@ G4VPhysicalVolume* saunaDetectorConstruction::Construct()
   // ------------------------------------------------------------------
   
   G4Material* PM_Mat = nist->FindOrBuildMaterial("G4_Al");
-  G4ThreeVector posPM = G4ThreeVector(0., 0., 2*bigBetaCyl_hz);
 
   G4double PM_rmin = 0.0*mm, PM_rmax = bigBetaCyl_rmax;
-  G4double PM_hz = ShieldLead_rmax/2 - bigBetaCyl_hz;
+  G4double PM_hz = 5*cm;
   G4double PM_phimin = 0.*deg, PM_phimax = 360.*deg;
+
+  G4ThreeVector posPM = G4ThreeVector(0., 0., bigBetaCyl_hz + PM_hz);
 
   // Cylinder shape 
   G4Tubs* solidPM1 =    

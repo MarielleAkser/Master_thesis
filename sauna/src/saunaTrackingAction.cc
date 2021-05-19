@@ -82,14 +82,14 @@ void saunaTrackingAction::PostUserTrackingAction(const G4Track* aTrack)
   G4TrackVector* secTracks = fpTrackingManager -> GimmeSecondaries();
   G4int nrSecTracks = (*secTracks).size();
 
-  G4cout
-      << "\n--------------------PostTrackingAction-----------------------"
-      << "\n eDep in volume: " << detector_name
-      << "\n with parent ID: " <<  parent_ID
-      << "\n and name: " << particle_name
-      << "\n Track ID: " << track_id
-      << "\n nr of secondary tracks: " << nrSecTracks
-      << "\n---------------------------------------------------------" 
-    << G4endl;
+  // G4cout
+  //     << "\n--------------------PostTrackingAction-----------------------"
+  //     << "\n eDep in volume: " << detector_name
+  //     << "\n with parent ID: " <<  parent_ID
+  //     << "\n and name: " << particle_name
+  //     << "\n Track ID: " << track_id
+  //     << "\n nr of secondary tracks: " << nrSecTracks
+  //     << "\n---------------------------------------------------------" 
+  //   << G4endl;
 
 }

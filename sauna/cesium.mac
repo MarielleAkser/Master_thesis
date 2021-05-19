@@ -21,5 +21,5 @@
 /gps/ene/mono 662 keV
 /gps/pos/centre 0 0. 0. mm
 /gps/ang/type iso
-/run/beamOn 10000
+/run/beamOn 1000000
 /vis/enable

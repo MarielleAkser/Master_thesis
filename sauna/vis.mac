@@ -117,7 +117,7 @@
 /vis/geometry/set/colour ShieldLead 0 0.5 0.5 0.5 0.1
 #
 /vis/geometry/set/visibility ShieldLeadPuck 1 true
-/vis/geometry/set/colour ShieldLead 0 0.5 0.5 0.5 0.1
+/vis/geometry/set/colour ShieldLeadPuck 0 0.5 0.5 0.5 0.1
 #
 # Make the Al Layer less visible
 /vis/geometry/set/visibility AlLayer 1 true
