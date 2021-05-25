@@ -58,6 +58,8 @@ set(sauna_SCRIPTS
   test.mac
   testVol.mac
   xe133beta.mac
+  hist_xe133.mac
+  xe133.mac
   )
 
 foreach(_script ${sauna_SCRIPTS})
