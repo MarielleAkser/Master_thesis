@@ -9,9 +9,9 @@
 /vis/disable
 #
 /control/verbose 2
-/run/verbose 2
-/event/verbose 2
-/tracking/verbose 1
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
 # 
 ##########################
 # MORE THAN ONE PARTICLE #
@@ -27,7 +27,10 @@
 /gps/ene/type User
 /gps/hist/type energy
 /control/execute hist_xe133.mac
-/gps/pos/centre 0. 0. 0. mm
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+/gps/pos/radius 9 mm
+/gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
 #
@@ -38,7 +41,10 @@
 ###########################
 /gps/particle e-
 /gps/ene/mono 45 keV
-/gps/pos/centre 0 0. 0. mm
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+/gps/pos/radius 9 mm
+/gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
 #
@@ -50,7 +56,10 @@
 /gps/particle gamma 
 /gps/ene/mono 31.6 keV
 /gps/pos/type Point
-/gps/pos/centre 0. 0. 0. mm
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+/gps/pos/radius 9 mm
+/gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
 /run/beamOn 1000000

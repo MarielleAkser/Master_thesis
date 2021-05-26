@@ -11,7 +11,6 @@
 /run/verbose 2
 /event/verbose 2
 /tracking/verbose 1
-#/tracking/storeTrajectory 1
 # 
 ##########################
 # MORE THAN ONE PARTICLE #
@@ -19,10 +18,14 @@
 #
 /gps/source/multiplevertex true
 #
-# electron from a volume with an isotropic angle distribution
-#
+##############
+# Xe133 beta
+##############
 /gps/particle e-
-/gps/ene/mono 300 keV
+/gps/ene/type User
+/gps/hist/type energy
+/control/execute hist_xe133.mac
+#
 /gps/pos/type Volume
 /gps/pos/shape Cylinder
 /gps/pos/radius 9 mm
@@ -32,24 +35,30 @@
 #
 /gps/source/add 1
 #
+###########################
+# Xe133 conversion electron
+###########################
 /gps/particle e-
-/gps/ene/mono 100 keV
+/gps/ene/mono 45 keV
+#
 /gps/pos/type Volume
 /gps/pos/shape Cylinder
-/gps/pos/radius 1 mm
+/gps/pos/radius 9 mm
 /gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
 #
 /gps/source/add 1
 #
-# gamma 662 keV and isotropic angle distribution
+#############
+# Xe133 gamma
+#############
+/gps/particle gamma 
+/gps/ene/mono 31.6 keV
 #
-/gps/particle gamma
-/gps/ene/mono 662 keV
 /gps/pos/type Volume
 /gps/pos/shape Cylinder
-/gps/pos/radius 1 mm
+/gps/pos/radius 9 mm
 /gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
