@@ -60,6 +60,15 @@ set(sauna_SCRIPTS
   xe133beta.mac
   hist_xe133.mac
   xe133.mac
+  xe133dual.mac
+  xe135.mac
+  hist_xe135.mac
+  xe135beta.mac
+  xe135dual.mac
+  xe133CE.mac
+  gamma.mac
+  xe135dual250.mac
+  xe133dual80.mac
   )
 
 foreach(_script ${sauna_SCRIPTS})

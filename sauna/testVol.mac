@@ -16,45 +16,13 @@
 # MORE THAN ONE PARTICLE #
 ##########################
 #
-/gps/source/multiplevertex true
-#
-##############
-# Xe133 beta
-##############
-/gps/particle e-
-/gps/ene/type User
-/gps/hist/type energy
-/control/execute hist_xe133.mac
-#
-/gps/pos/type Volume
-/gps/pos/shape Cylinder
-/gps/pos/radius 9 mm
-/gps/pos/halfz 32.5 mm
-/gps/ang/type iso
-#
-#
-/gps/source/add 1
-#
-###########################
-# Xe133 conversion electron
-###########################
-/gps/particle e-
-/gps/ene/mono 45 keV
-#
-/gps/pos/type Volume
-/gps/pos/shape Cylinder
-/gps/pos/radius 9 mm
-/gps/pos/halfz 32.5 mm
-/gps/ang/type iso
-#
-#
-/gps/source/add 1
+#/gps/source/multiplevertex true
 #
 #############
-# Xe133 gamma
+# gamma
 #############
 /gps/particle gamma 
-/gps/ene/mono 31.6 keV
+/gps/ene/mono 900 keV
 #
 /gps/pos/type Volume
 /gps/pos/shape Cylinder
@@ -62,4 +30,4 @@
 /gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
-/run/beamOn 10
+/run/beamOn 50

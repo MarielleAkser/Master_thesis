@@ -23,7 +23,7 @@
 # Xe133 beta
 ##############
 /gps/particle e-
-#/gps/source/intensity 1
+/gps/source/intensity 1
 /gps/ene/type User
 /gps/hist/type energy
 /control/execute hist_xe133.mac
@@ -62,5 +62,5 @@
 /gps/pos/halfz 32.5 mm
 /gps/ang/type iso
 #
-/run/beamOn 1000000
+/run/beamOn 50000
 /vis/enable

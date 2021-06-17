@@ -1,5 +1,0 @@
-#class tools::wcsv::ntuple
-#title EnergyDeposit
-#separator 44
-#vector_separator 59
-#column double Edep

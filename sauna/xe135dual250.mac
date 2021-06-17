@@ -1,0 +1,53 @@
+# Macro file for sauna
+# 
+# Can be run in batch, without graphic
+# or interactively: Idle> /control/execute test.mac
+#
+#
+# Initialize kernel
+/run/initialize
+/vis/disable
+#
+/control/verbose 2
+/run/verbose 0
+/event/verbose 0
+/tracking/verbose 0
+# 
+##########################
+# MORE THAN ONE PARTICLE #
+##########################
+#
+/gps/source/multiplevertex true
+#
+##############
+# Xe135 beta
+##############
+/gps/particle e-
+/gps/source/intensity 1
+/gps/ene/type User
+/gps/hist/type energy
+/control/execute hist_xe135.mac
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+/gps/pos/radius 9 mm
+/gps/pos/halfz 32.5 mm
+/gps/ang/type iso
+#
+#
+/gps/source/add 1
+#
+#
+#############
+# Xe133 gamma
+#############
+/gps/particle gamma 
+/gps/ene/mono 249.770 keV
+/gps/pos/type Point
+/gps/pos/type Volume
+/gps/pos/shape Cylinder
+/gps/pos/radius 9 mm
+/gps/pos/halfz 32.5 mm
+/gps/ang/type iso
+#
+/run/beamOn 1000000
+/vis/enable

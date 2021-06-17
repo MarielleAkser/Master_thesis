@@ -1,11 +1,6 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-from scipy.constants import e, c, hbar, alpha, m_e
-from scipy.integrate import quad
-import cmath
-import math
-import scipy as sp
 
 # File from Github:
 with open('XE133_beta_spectrum.txt') as f:
